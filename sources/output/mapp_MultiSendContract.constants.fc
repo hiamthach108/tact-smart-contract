@@ -1,0 +1,4 @@
+;; Comment "sent"
+cell __gen_cell_comment_8ce5c8027b6d8bd6084aedd3411e4d8d7f1ad449598bfb3088fefafd7774b02e() asm """
+    B{b5ee9c7241010101000a0000100000000073656e7429c3a797} B>boc PUSHREF
+""";
