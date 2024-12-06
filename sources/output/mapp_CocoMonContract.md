@@ -1,9 +1,9 @@
 # TACT Compilation Report
-Contract: SampleTactContract
-BOC Size: 702 bytes
+Contract: CocoMonContract
+BOC Size: 1255 bytes
 
 # Types
-Total Types: 12
+Total Types: 13
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -37,26 +37,33 @@ Signature: `DeployOk{queryId:uint64}`
 TLB: `factory_deploy#6d0ff13b queryId:uint64 cashback:address = FactoryDeploy`
 Signature: `FactoryDeploy{queryId:uint64,cashback:address}`
 
-## Add
-TLB: `add#87d43ac2 amount:uint32 = Add`
-Signature: `Add{amount:uint32}`
+## ClaimUpdate
+TLB: `claim_update#3ce663ca recipients:dict<address, int> = ClaimUpdate`
+Signature: `ClaimUpdate{recipients:dict<address, int>}`
 
-## SampleTactContract$Data
-TLB: `null`
-Signature: `null`
+## JettonTransfer
+TLB: `jetton_transfer#0f8a7ea5 queryId:uint64 amount:coins destination:address responseDestination:Maybe address customPayload:Maybe ^cell forwardTonAmount:coins forwardPayload:remainder<slice> = JettonTransfer`
+Signature: `JettonTransfer{queryId:uint64,amount:coins,destination:address,responseDestination:Maybe address,customPayload:Maybe ^cell,forwardTonAmount:coins,forwardPayload:remainder<slice>}`
 
-## MultiSend
-TLB: `multi_send#58f42bf7 recipients:dict<address, int> = MultiSend`
-Signature: `MultiSend{recipients:dict<address, int>}`
+## Claim
+TLB: `claim#3dea4fd7 amount:coins = Claim`
+Signature: `Claim{amount:coins}`
 
-## MultiSendContract$Data
+## JettonWalletData
+TLB: `_ balance:coins ownerAddress:address jettonMasterAddress:address jettonWalletCode:^cell = JettonWalletData`
+Signature: `JettonWalletData{balance:coins,ownerAddress:address,jettonMasterAddress:address,jettonWalletCode:^cell}`
+
+## CocoMonContract$Data
 TLB: `null`
 Signature: `null`
 
 # Get Methods
-Total Get Methods: 1
+Total Get Methods: 2
 
-## counter
+## claimable
+Argument: adr
+
+## recipients
 
 # Error Codes
 2: Stack underflow
@@ -96,14 +103,16 @@ Total Get Methods: 1
 136: Invalid address
 137: Masterchain support is not enabled for this contract
 4429: Invalid sender
+52232: No amount to claim
+58682: Amount to claim is too big
 
 # Trait Inheritance Diagram
 
 ```mermaid
 graph TD
-SampleTactContract
-SampleTactContract --> BaseTrait
-SampleTactContract --> Deployable
+CocoMonContract
+CocoMonContract --> BaseTrait
+CocoMonContract --> Deployable
 Deployable --> BaseTrait
 ```
 
@@ -111,5 +120,5 @@ Deployable --> BaseTrait
 
 ```mermaid
 graph TD
-SampleTactContract
+CocoMonContract
 ```

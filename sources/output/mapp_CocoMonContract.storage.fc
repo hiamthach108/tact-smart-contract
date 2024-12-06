@@ -117,50 +117,48 @@ cell $JettonTransfer$_store_cell((int, int, slice, slice, cell, int, slice) v) i
 }
 
 ;;
-;; Type: MultiSendContract
+;; Type: CocoMonContract
 ;;
 
-builder $MultiSendContract$_store(builder build_0, (slice, slice, int, cell) v) inline {
-    var (v'owner, v'tokenAddress, v'tokenBalance, v'recipients) = v;
+builder $CocoMonContract$_store(builder build_0, (slice, slice, cell) v) inline {
+    var (v'owner, v'tokenAddress, v'recipients) = v;
     build_0 = __tact_store_address(build_0, v'owner);
     build_0 = __tact_store_address(build_0, v'tokenAddress);
-    build_0 = build_0.store_coins(v'tokenBalance);
     build_0 = build_0.store_dict(v'recipients);
     return build_0;
 }
 
-(slice, ((slice, slice, int, cell))) $MultiSendContract$_load(slice sc_0) inline {
+(slice, ((slice, slice, cell))) $CocoMonContract$_load(slice sc_0) inline {
     var v'owner = sc_0~__tact_load_address();
     var v'tokenAddress = sc_0~__tact_load_address();
-    var v'tokenBalance = sc_0~load_coins();
     var v'recipients = sc_0~load_dict();
-    return (sc_0, (v'owner, v'tokenAddress, v'tokenBalance, v'recipients));
+    return (sc_0, (v'owner, v'tokenAddress, v'recipients));
 }
 
-(slice, ((slice))) $MultiSendContract$init$_load(slice sc_0) inline {
+(slice, ((slice))) $CocoMonContract$init$_load(slice sc_0) inline {
     var v'tokenAddress = sc_0~__tact_load_address();
     return (sc_0, (v'tokenAddress));
 }
 
-(slice, slice, int, cell) $MultiSendContract$_contract_load() impure inline_ref {
+(slice, slice, cell) $CocoMonContract$_contract_load() impure inline_ref {
     slice $sc = get_data().begin_parse();
     __tact_context_sys = $sc~load_ref();
     int $loaded = $sc~load_int(1);
     if ($loaded) {
-        return $sc~$MultiSendContract$_load();
+        return $sc~$CocoMonContract$_load();
     } else {
         ;; Allow only workchain deployments
         throw_unless(137, my_address().preload_uint(11) == 1024);
-        (slice $tokenAddress) = $sc~$MultiSendContract$init$_load();
+        (slice $tokenAddress) = $sc~$CocoMonContract$init$_load();
         $sc.end_parse();
-        return $MultiSendContract$_contract_init($tokenAddress);
+        return $CocoMonContract$_contract_init($tokenAddress);
     }
 }
 
-() $MultiSendContract$_contract_store((slice, slice, int, cell) v) impure inline {
+() $CocoMonContract$_contract_store((slice, slice, cell) v) impure inline {
     builder b = begin_cell();
     b = b.store_ref(__tact_context_sys);
     b = b.store_int(true, 1);
-    b = $MultiSendContract$_store(b, v);
+    b = $CocoMonContract$_store(b, v);
     set_data(b.end_cell());
 }

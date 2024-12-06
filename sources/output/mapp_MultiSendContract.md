@@ -1,9 +1,9 @@
 # TACT Compilation Report
 Contract: MultiSendContract
-BOC Size: 956 bytes
+BOC Size: 1130 bytes
 
 # Types
-Total Types: 12
+Total Types: 13
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -37,29 +37,28 @@ Signature: `DeployOk{queryId:uint64}`
 TLB: `factory_deploy#6d0ff13b queryId:uint64 cashback:address = FactoryDeploy`
 Signature: `FactoryDeploy{queryId:uint64,cashback:address}`
 
-## Add
-TLB: `add#87d43ac2 amount:uint32 = Add`
-Signature: `Add{amount:uint32}`
+## ClaimUpdate
+TLB: `claim_update#3ce663ca recipients:dict<address, int> = ClaimUpdate`
+Signature: `ClaimUpdate{recipients:dict<address, int>}`
 
-## SampleTactContract$Data
-TLB: `null`
-Signature: `null`
+## JettonTransfer
+TLB: `jetton_transfer#0f8a7ea5 queryId:uint64 amount:coins destination:address responseDestination:Maybe address customPayload:Maybe ^cell forwardTonAmount:coins forwardPayload:remainder<slice> = JettonTransfer`
+Signature: `JettonTransfer{queryId:uint64,amount:coins,destination:address,responseDestination:Maybe address,customPayload:Maybe ^cell,forwardTonAmount:coins,forwardPayload:remainder<slice>}`
 
-## MultiSend
-TLB: `multi_send#58f42bf7 recipients:dict<address, int> = MultiSend`
-Signature: `MultiSend{recipients:dict<address, int>}`
+## Claim
+TLB: `claim#3dea4fd7 amount:coins = Claim`
+Signature: `Claim{amount:coins}`
+
+## JettonWalletData
+TLB: `_ balance:coins ownerAddress:address jettonMasterAddress:address jettonWalletCode:^cell = JettonWalletData`
+Signature: `JettonWalletData{balance:coins,ownerAddress:address,jettonMasterAddress:address,jettonWalletCode:^cell}`
 
 ## MultiSendContract$Data
 TLB: `null`
 Signature: `null`
 
 # Get Methods
-Total Get Methods: 2
-
-## recipients
-
-## claimableToken
-Argument: addr
+Total Get Methods: 0
 
 # Error Codes
 2: Stack underflow
@@ -99,6 +98,7 @@ Argument: addr
 136: Invalid address
 137: Masterchain support is not enabled for this contract
 4429: Invalid sender
+52232: No amount to claim
 
 # Trait Inheritance Diagram
 

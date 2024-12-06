@@ -20,6 +20,15 @@ builder __tact_store_address(builder b, slice address) inline {
     return b.store_slice(__tact_verify_address(address));
 }
 
+builder __tact_store_address_opt(builder b, slice address) inline {
+    if (null?(address)) {
+        b = b.store_uint(0, 2);
+        return b;
+    } else {
+        return __tact_store_address(b, address);
+    }
+}
+
 forall X -> X __tact_not_null(X x) impure inline {
     throw_if(128, null?(x)); return x;
 }
@@ -90,6 +99,10 @@ int __tact_dict_get_slice_int(cell d, int kl, slice k, int vl) inline {
 
 int __tact_slice_eq_bits(slice a, slice b) inline {
     return equal_slices_bits(a, b);
+}
+
+int __tact_int_neq_nullable_one(int a, int b) inline {
+    return (null?(a)) ? (true) : (a != b);
 }
 
 forall X0, X1 -> (X0, X1) __tact_tuple_destroy_2(tuple v) asm """
@@ -175,8 +188,8 @@ int $global_send((int, slice, int, int, cell, cell, cell) $params) impure inline
     return $global_nativeSendMessageReturnForwardFee($c, $params'mode);
 }
 
-((slice, slice, cell), ()) $MultiSendContract$_fun_forward((slice, slice, cell) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref {
-    var (($self'owner, $self'tokenAddress, $self'recipients)) = $self;
+((slice, slice, int, cell), ()) $MultiSendContract$_fun_forward((slice, slice, int, cell) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref {
+    var (($self'owner, $self'tokenAddress, $self'tokenBalance, $self'recipients)) = $self;
     var ($init) = $init;
     cell $code = null();
     cell $data = null();
@@ -192,21 +205,21 @@ int $global_send((int, slice, int, int, cell, cell, cell) $params) impure inline
         if (($balanceBeforeMessage < 0)) {
             $global_nativeReserve(0, 0);
             $global_send($SendParameters$_constructor_bounce_to_value_mode_body_code_data($bounce, $to, 0, 130, $body, $code, $data));
-            return (($self'owner, $self'tokenAddress, $self'recipients), ());
+            return (($self'owner, $self'tokenAddress, $self'tokenBalance, $self'recipients), ());
         }
     }
     $global_send($SendParameters$_constructor_bounce_to_value_mode_body_code_data($bounce, $to, 0, 66, $body, $code, $data));
-    return (($self'owner, $self'tokenAddress, $self'recipients), ());
+    return (($self'owner, $self'tokenAddress, $self'tokenBalance, $self'recipients), ());
 }
 
-((slice, slice, cell), ()) $MultiSendContract$_fun_reply((slice, slice, cell) $self, cell $body) impure inline {
-    var (($self'owner, $self'tokenAddress, $self'recipients)) = $self;
-    ($self'owner, $self'tokenAddress, $self'recipients)~$MultiSendContract$_fun_forward(__tact_context_get_sender(), $body, true, null());
-    return (($self'owner, $self'tokenAddress, $self'recipients), ());
+((slice, slice, int, cell), ()) $MultiSendContract$_fun_reply((slice, slice, int, cell) $self, cell $body) impure inline {
+    var (($self'owner, $self'tokenAddress, $self'tokenBalance, $self'recipients)) = $self;
+    ($self'owner, $self'tokenAddress, $self'tokenBalance, $self'recipients)~$MultiSendContract$_fun_forward(__tact_context_get_sender(), $body, true, null());
+    return (($self'owner, $self'tokenAddress, $self'tokenBalance, $self'recipients), ());
 }
 
-((slice, slice, cell), ()) $MultiSendContract$_fun_notify((slice, slice, cell) $self, cell $body) impure inline {
-    var (($self'owner, $self'tokenAddress, $self'recipients)) = $self;
-    ($self'owner, $self'tokenAddress, $self'recipients)~$MultiSendContract$_fun_forward(__tact_context_get_sender(), $body, false, null());
-    return (($self'owner, $self'tokenAddress, $self'recipients), ());
+((slice, slice, int, cell), ()) $MultiSendContract$_fun_notify((slice, slice, int, cell) $self, cell $body) impure inline {
+    var (($self'owner, $self'tokenAddress, $self'tokenBalance, $self'recipients)) = $self;
+    ($self'owner, $self'tokenAddress, $self'tokenBalance, $self'recipients)~$MultiSendContract$_fun_forward(__tact_context_get_sender(), $body, false, null());
+    return (($self'owner, $self'tokenAddress, $self'tokenBalance, $self'recipients), ());
 }

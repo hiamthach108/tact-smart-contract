@@ -1,7 +1,7 @@
 import "@stdlib/deploy";
 
 
-message MultiSend {
+message ClaimUpdate {
     recipients: map<Address, Int>;
 }
 
@@ -47,23 +47,21 @@ fun calculateJettonWalletAddress(
     });
 }
 
-contract MultiSendContract with Deployable {
+contract CocoMonContract with Deployable {
     owner: Address;
     tokenAddress: Address;
-    tokenBalance: Int as coins;
     recipients: map<Address, Int>;
 
     init(tokenAddress: Address) {
         self.owner = context().sender;
         self.tokenAddress = tokenAddress;
-        self.tokenBalance = 0;
     }
 
-    receive(msg: MultiSend) {
-        self.multiSend(msg.recipients);
+    receive(msg: ClaimUpdate) {
+        self.updateClaim(msg.recipients);
     }
 
-    fun multiSend(recipients: map<Address, Int>) {
+    fun updateClaim(recipients: map<Address, Int>) {
         let ctx: Context = context();
         require(ctx.sender == self.owner, "Invalid sender");
 
@@ -86,34 +84,36 @@ contract MultiSendContract with Deployable {
         let amount = self.recipients.get(ctx.sender);
         require(amount != null && amount != 0, "No amount to claim");
 
+        require(msg.amount <= amount!!, "Amount to claim is too big");
+
         send(SendParameters{
             to: ctx.sender, 
             value: JettonTransferGas, 
             body: JettonTransfer{
-                // To prevent replay attacks
                 queryId: 42,
-                // Jetton amount to transfer
-                amount: msg.amount,
-                // Where to transfer Jettons:
-                // this is an address of the Jetton wallet
-                // owner and not the Jetton wallet itself
+                amount: msg.amount - amount!!,
                 destination: sender(),
-                // Where to send a confirmation notice of a successful transfer
-                // and the rest of the incoming message value
                 responseDestination: sender(),
-                // Can be used for custom logic of Jettons themselves,
-                // and without such can be set to null
                 customPayload: null,
-                // Amount to transfer with JettonTransferNotification,
-                // which is needed for the execution of custom logic
-                forwardTonAmount: 1, // if its 0, the notification won't be sent!
-                // Compile-time way of expressing:
-                //     beginCell().storeUint(0xF, 4).endCell().beginParse()
-                // For more complicated transfers, adjust accordingly
+                forwardTonAmount: 1,
                 forwardPayload: rawSlice("F")
             }.toCell(),
         });
 
-        self.recipients.set(ctx.sender, 0);
+        self.recipients.set(ctx.sender, msg.amount - amount!!);
+    }
+
+    get fun claimable(adr: Address): Int {
+        let ctx: Context = context();
+        let amount = self.recipients.get(adr);
+        if (amount == null) {
+            return 0;
+        } else {
+            return amount!!;
+        }
+    }
+
+    get fun recipients(): map<Address, Int> {
+        return self.recipients;
     }
 }

@@ -1,5 +1,5 @@
 ;;
-;; Header files for MultiSendContract
+;; Header files for CocoMonContract
 ;; NOTE: declarations are sorted for optimal order
 ;;
 
@@ -72,11 +72,11 @@ cell $JettonTransfer$_store_cell((int, int, slice, slice, cell, int, slice) v) i
 ;; $Claim$_load
 (slice, ((int))) $Claim$_load(slice sc_0) inline;
 
-;; $MultiSendContract$_store
-builder $MultiSendContract$_store(builder build_0, (slice, slice, int, cell) v) inline;
+;; $CocoMonContract$_store
+builder $CocoMonContract$_store(builder build_0, (slice, slice, cell) v) inline;
 
-;; $MultiSendContract$_load
-(slice, ((slice, slice, int, cell))) $MultiSendContract$_load(slice sc_0) inline;
+;; $CocoMonContract$_load
+(slice, ((slice, slice, cell))) $CocoMonContract$_load(slice sc_0) inline;
 
 ;; $StateInit$_not_null
 ((cell, cell)) $StateInit$_not_null(tuple v) inline;
@@ -84,17 +84,17 @@ builder $MultiSendContract$_store(builder build_0, (slice, slice, int, cell) v) 
 ;; $Context$_get_sender
 _ $Context$_get_sender((int, slice, int, slice) v) inline;
 
-;; $MultiSendContract$init$_load
-(slice, ((slice))) $MultiSendContract$init$_load(slice sc_0) inline;
+;; $CocoMonContract$init$_load
+(slice, ((slice))) $CocoMonContract$init$_load(slice sc_0) inline;
 
-;; $MultiSendContract$_contract_init
-(slice, slice, int, cell) $MultiSendContract$_contract_init(slice $tokenAddress) impure inline_ref;
+;; $CocoMonContract$_contract_init
+(slice, slice, cell) $CocoMonContract$_contract_init(slice $tokenAddress) impure inline_ref;
 
-;; $MultiSendContract$_contract_load
-(slice, slice, int, cell) $MultiSendContract$_contract_load() impure inline_ref;
+;; $CocoMonContract$_contract_load
+(slice, slice, cell) $CocoMonContract$_contract_load() impure inline_ref;
 
-;; $MultiSendContract$_contract_store
-() $MultiSendContract$_contract_store((slice, slice, int, cell) v) impure inline;
+;; $CocoMonContract$_contract_store
+() $CocoMonContract$_contract_store((slice, slice, cell) v) impure inline;
 
 ;; $global_send
 int $global_send((int, slice, int, int, cell, cell, cell) $params) impure inline_ref;
@@ -102,17 +102,23 @@ int $global_send((int, slice, int, int, cell, cell, cell) $params) impure inline
 ;; $SendParameters$_constructor_bounce_to_value_mode_body_code_data
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_bounce_to_value_mode_body_code_data(int $bounce, slice $to, int $value, int $mode, cell $body, cell $code, cell $data) inline;
 
-;; $MultiSendContract$_fun_forward
-((slice, slice, int, cell), ()) $MultiSendContract$_fun_forward((slice, slice, int, cell) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
+;; $CocoMonContract$_fun_forward
+((slice, slice, cell), ()) $CocoMonContract$_fun_forward((slice, slice, cell) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
 
-;; $MultiSendContract$_fun_reply
-((slice, slice, int, cell), ()) $MultiSendContract$_fun_reply((slice, slice, int, cell) $self, cell $body) impure inline;
+;; $CocoMonContract$_fun_reply
+((slice, slice, cell), ()) $CocoMonContract$_fun_reply((slice, slice, cell) $self, cell $body) impure inline;
 
-;; $MultiSendContract$_fun_updateClaim
-((slice, slice, int, cell), ()) $MultiSendContract$_fun_updateClaim((slice, slice, int, cell) $self, cell $recipients) impure inline_ref;
+;; $CocoMonContract$_fun_updateClaim
+((slice, slice, cell), ()) $CocoMonContract$_fun_updateClaim((slice, slice, cell) $self, cell $recipients) impure inline_ref;
 
-;; $MultiSendContract$_fun_notify
-((slice, slice, int, cell), ()) $MultiSendContract$_fun_notify((slice, slice, int, cell) $self, cell $body) impure inline;
+;; $CocoMonContract$_fun_claimable
+((slice, slice, cell), int) $CocoMonContract$_fun_claimable((slice, slice, cell) $self, slice $adr) impure inline_ref;
+
+;; $CocoMonContract$_fun_recipients
+((slice, slice, cell), cell) $CocoMonContract$_fun_recipients((slice, slice, cell) $self) impure inline_ref;
+
+;; $CocoMonContract$_fun_notify
+((slice, slice, cell), ()) $CocoMonContract$_fun_notify((slice, slice, cell) $self, cell $body) impure inline;
 
 ;; $SendParameters$_constructor_to_value_body
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_body(slice $to, int $value, cell $body) inline;

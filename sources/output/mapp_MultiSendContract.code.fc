@@ -11,19 +11,20 @@
 ;; Contract MultiSendContract functions
 ;;
 
-(slice, slice, cell) $MultiSendContract$_contract_init(slice $tokenAddress) impure inline_ref {
-    var (($self'owner, $self'tokenAddress, $self'recipients)) = (null(), null(), null());
+(slice, slice, int, cell) $MultiSendContract$_contract_init(slice $tokenAddress) impure inline_ref {
+    var (($self'owner, $self'tokenAddress, $self'tokenBalance, $self'recipients)) = (null(), null(), null(), null());
     $self'owner = $Context$_get_sender(__tact_context_get());
     $self'tokenAddress = $tokenAddress;
-    return ($self'owner, $self'tokenAddress, $self'recipients);
+    $self'tokenBalance = 0;
+    return ($self'owner, $self'tokenAddress, $self'tokenBalance, $self'recipients);
 }
 
-((slice, slice, cell), ()) $MultiSendContract$_fun_multiSend((slice, slice, cell) $self, cell $recipients) impure inline_ref {
-    var (($self'owner, $self'tokenAddress, $self'recipients)) = $self;
+((slice, slice, int, cell), ()) $MultiSendContract$_fun_updateClaim((slice, slice, int, cell) $self, cell $recipients) impure inline_ref {
+    var (($self'owner, $self'tokenAddress, $self'tokenBalance, $self'recipients)) = $self;
     var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
     throw_unless(4429, ( __tact_slice_eq_bits($self'owner, $ctx'sender) ));
-    var ($recipient, $amount, $fresh$flag_6) = __tact_dict_min_slice_int($recipients, 267, 257);
-    while ($fresh$flag_6) {
+    var ($recipient, $amount, $fresh$flag_0) = __tact_dict_min_slice_int($recipients, 267, 257);
+    while ($fresh$flag_0) {
         tuple $cmt = __tact_string_builder_start_comment();
         int $old = __tact_dict_get_slice_int($self'recipients, 267, $recipient, 257);
         if (null?($old)) {
@@ -32,63 +33,44 @@
             int $new = (__tact_not_null($old) + $amount);
             $self'recipients~__tact_dict_set_slice_int(267, $recipient, $new, 257);
         }
-        ($recipient, $amount, $fresh$flag_6) = __tact_dict_next_slice_int($recipients, 267, $recipient, 257);
+        ($recipient, $amount, $fresh$flag_0) = __tact_dict_next_slice_int($recipients, 267, $recipient, 257);
     }
-    ($self'owner, $self'tokenAddress, $self'recipients)~$MultiSendContract$_fun_reply(__gen_cell_comment_8ce5c8027b6d8bd6084aedd3411e4d8d7f1ad449598bfb3088fefafd7774b02e());
-    return (($self'owner, $self'tokenAddress, $self'recipients), ());
-}
-
-((slice, slice, cell), cell) $MultiSendContract$_fun_recipients((slice, slice, cell) $self) impure inline_ref {
-    var (($self'owner, $self'tokenAddress, $self'recipients)) = $self;
-    var $fresh$ret_7 = $self'recipients;
-    return (($self'owner, $self'tokenAddress, $self'recipients), $fresh$ret_7);
-}
-
-((slice, slice, cell), int) $MultiSendContract$_fun_claimableToken((slice, slice, cell) $self, slice $addr) impure inline_ref {
-    var (($self'owner, $self'tokenAddress, $self'recipients)) = $self;
-    int $amount = __tact_dict_get_slice_int($self'recipients, 267, $addr, 257);
-    if (null?($amount)) {
-        var $fresh$ret_8 = 0;
-        return (($self'owner, $self'tokenAddress, $self'recipients), $fresh$ret_8);
-    }
-    var $fresh$ret_9 = __tact_not_null($amount);
-    return (($self'owner, $self'tokenAddress, $self'recipients), $fresh$ret_9);
+    ($self'owner, $self'tokenAddress, $self'tokenBalance, $self'recipients)~$MultiSendContract$_fun_reply(__gen_cell_comment_8ce5c8027b6d8bd6084aedd3411e4d8d7f1ad449598bfb3088fefafd7774b02e());
+    return (($self'owner, $self'tokenAddress, $self'tokenBalance, $self'recipients), ());
 }
 
 ;;
 ;; Receivers of a Contract MultiSendContract
 ;;
 
-(((slice, slice, cell)), ()) $MultiSendContract$_internal_binary_MultiSend((slice, slice, cell) $self, (cell) $msg) impure inline {
-    var ($self'owner, $self'tokenAddress, $self'recipients) = $self;
+(((slice, slice, int, cell)), ()) $MultiSendContract$_internal_binary_ClaimUpdate((slice, slice, int, cell) $self, (cell) $msg) impure inline {
+    var ($self'owner, $self'tokenAddress, $self'tokenBalance, $self'recipients) = $self;
     var ($msg'recipients) = $msg;
-    ($self'owner, $self'tokenAddress, $self'recipients)~$MultiSendContract$_fun_multiSend($msg'recipients);
-    return (($self'owner, $self'tokenAddress, $self'recipients), ());
+    ($self'owner, $self'tokenAddress, $self'tokenBalance, $self'recipients)~$MultiSendContract$_fun_updateClaim($msg'recipients);
+    return (($self'owner, $self'tokenAddress, $self'tokenBalance, $self'recipients), ());
 }
 
-(((slice, slice, cell)), ()) $MultiSendContract$_internal_binary_Deploy((slice, slice, cell) $self, (int) $deploy) impure inline {
-    var ($self'owner, $self'tokenAddress, $self'recipients) = $self;
+(((slice, slice, int, cell)), ()) $MultiSendContract$_internal_binary_Claim((slice, slice, int, cell) $self, (int) $msg) impure inline {
+    var ($self'owner, $self'tokenAddress, $self'tokenBalance, $self'recipients) = $self;
+    var ($msg'amount) = $msg;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    int $amount = __tact_dict_get_slice_int($self'recipients, 267, $ctx'sender, 257);
+    throw_unless(52232, ( ((~ null?($amount))) ? (__tact_int_neq_nullable_one($amount, 0)) : (false) ));
+    $global_send($SendParameters$_constructor_to_value_body($ctx'sender, 50000000, $JettonTransfer$_store_cell($JettonTransfer$_constructor_queryId_amount_destination_responseDestination_customPayload_forwardTonAmount_forwardPayload(42, $msg'amount, __tact_context_get_sender(), __tact_context_get_sender(), null(), 1, __gen_slice_slice_5dcf118847f69faec2c995cb99acf92d70cfe3223342f66c96b504350c5d5b19()))));
+    $self'recipients~__tact_dict_set_slice_int(267, $ctx'sender, 0, 257);
+    return (($self'owner, $self'tokenAddress, $self'tokenBalance, $self'recipients), ());
+}
+
+(((slice, slice, int, cell)), ()) $MultiSendContract$_internal_binary_Deploy((slice, slice, int, cell) $self, (int) $deploy) impure inline {
+    var ($self'owner, $self'tokenAddress, $self'tokenBalance, $self'recipients) = $self;
     var ($deploy'queryId) = $deploy;
-    ($self'owner, $self'tokenAddress, $self'recipients)~$MultiSendContract$_fun_notify($DeployOk$_store_cell($DeployOk$_constructor_queryId($deploy'queryId)));
-    return (($self'owner, $self'tokenAddress, $self'recipients), ());
+    ($self'owner, $self'tokenAddress, $self'tokenBalance, $self'recipients)~$MultiSendContract$_fun_notify($DeployOk$_store_cell($DeployOk$_constructor_queryId($deploy'queryId)));
+    return (($self'owner, $self'tokenAddress, $self'tokenBalance, $self'recipients), ());
 }
 
 ;;
 ;; Get methods of a Contract MultiSendContract
 ;;
-
-_ %recipients() method_id(84049) {
-    var self = $MultiSendContract$_contract_load();
-    var res = self~$MultiSendContract$_fun_recipients();
-    return res;
-}
-
-_ %claimableToken(slice $addr) method_id(84504) {
-    slice $addr = __tact_verify_address($addr);
-    var self = $MultiSendContract$_contract_load();
-    var res = self~$MultiSendContract$_fun_claimableToken($addr);
-    return res;
-}
 
 _ lazy_deployment_completed() method_id {
     return get_data().begin_parse().load_int(1);
@@ -98,7 +80,7 @@ _ lazy_deployment_completed() method_id {
 ;; Routing of a Contract MultiSendContract
 ;;
 
-((slice, slice, cell), int) $MultiSendContract$_contract_router_internal((slice, slice, cell) self, int msg_bounced, slice in_msg) impure inline_ref {
+((slice, slice, int, cell), int) $MultiSendContract$_contract_router_internal((slice, slice, int, cell) self, int msg_bounced, slice in_msg) impure inline_ref {
     ;; Handle bounced messages
     if (msg_bounced) {
         return (self, true);
@@ -111,10 +93,17 @@ _ lazy_deployment_completed() method_id {
     }
     
     
-    ;; Receive MultiSend message
-    if (op == 1492397047) {
-        var msg = in_msg~$MultiSend$_load();
-        self~$MultiSendContract$_internal_binary_MultiSend(msg);
+    ;; Receive ClaimUpdate message
+    if (op == 1021731786) {
+        var msg = in_msg~$ClaimUpdate$_load();
+        self~$MultiSendContract$_internal_binary_ClaimUpdate(msg);
+        return (self, true);
+    }
+    
+    ;; Receive Claim message
+    if (op == 1038766039) {
+        var msg = in_msg~$Claim$_load();
+        self~$MultiSendContract$_internal_binary_Claim(msg);
         return (self, true);
     }
     

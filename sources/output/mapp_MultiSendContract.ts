@@ -464,147 +464,242 @@ function dictValueParserFactoryDeploy(): DictionaryValue<FactoryDeploy> {
     }
 }
 
-export type Add = {
-    $$type: 'Add';
-    amount: bigint;
-}
-
-export function storeAdd(src: Add) {
-    return (builder: Builder) => {
-        let b_0 = builder;
-        b_0.storeUint(2278832834, 32);
-        b_0.storeUint(src.amount, 32);
-    };
-}
-
-export function loadAdd(slice: Slice) {
-    let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 2278832834) { throw Error('Invalid prefix'); }
-    let _amount = sc_0.loadUintBig(32);
-    return { $$type: 'Add' as const, amount: _amount };
-}
-
-function loadTupleAdd(source: TupleReader) {
-    let _amount = source.readBigNumber();
-    return { $$type: 'Add' as const, amount: _amount };
-}
-
-function loadGetterTupleAdd(source: TupleReader) {
-    let _amount = source.readBigNumber();
-    return { $$type: 'Add' as const, amount: _amount };
-}
-
-function storeTupleAdd(source: Add) {
-    let builder = new TupleBuilder();
-    builder.writeNumber(source.amount);
-    return builder.build();
-}
-
-function dictValueParserAdd(): DictionaryValue<Add> {
-    return {
-        serialize: (src, builder) => {
-            builder.storeRef(beginCell().store(storeAdd(src)).endCell());
-        },
-        parse: (src) => {
-            return loadAdd(src.loadRef().beginParse());
-        }
-    }
-}
-
-export type SampleTactContract$Data = {
-    $$type: 'SampleTactContract$Data';
-    owner: Address;
-    counter: bigint;
-}
-
-export function storeSampleTactContract$Data(src: SampleTactContract$Data) {
-    return (builder: Builder) => {
-        let b_0 = builder;
-        b_0.storeAddress(src.owner);
-        b_0.storeUint(src.counter, 32);
-    };
-}
-
-export function loadSampleTactContract$Data(slice: Slice) {
-    let sc_0 = slice;
-    let _owner = sc_0.loadAddress();
-    let _counter = sc_0.loadUintBig(32);
-    return { $$type: 'SampleTactContract$Data' as const, owner: _owner, counter: _counter };
-}
-
-function loadTupleSampleTactContract$Data(source: TupleReader) {
-    let _owner = source.readAddress();
-    let _counter = source.readBigNumber();
-    return { $$type: 'SampleTactContract$Data' as const, owner: _owner, counter: _counter };
-}
-
-function loadGetterTupleSampleTactContract$Data(source: TupleReader) {
-    let _owner = source.readAddress();
-    let _counter = source.readBigNumber();
-    return { $$type: 'SampleTactContract$Data' as const, owner: _owner, counter: _counter };
-}
-
-function storeTupleSampleTactContract$Data(source: SampleTactContract$Data) {
-    let builder = new TupleBuilder();
-    builder.writeAddress(source.owner);
-    builder.writeNumber(source.counter);
-    return builder.build();
-}
-
-function dictValueParserSampleTactContract$Data(): DictionaryValue<SampleTactContract$Data> {
-    return {
-        serialize: (src, builder) => {
-            builder.storeRef(beginCell().store(storeSampleTactContract$Data(src)).endCell());
-        },
-        parse: (src) => {
-            return loadSampleTactContract$Data(src.loadRef().beginParse());
-        }
-    }
-}
-
-export type MultiSend = {
-    $$type: 'MultiSend';
+export type ClaimUpdate = {
+    $$type: 'ClaimUpdate';
     recipients: Dictionary<Address, bigint>;
 }
 
-export function storeMultiSend(src: MultiSend) {
+export function storeClaimUpdate(src: ClaimUpdate) {
     return (builder: Builder) => {
         let b_0 = builder;
-        b_0.storeUint(1492397047, 32);
+        b_0.storeUint(1021731786, 32);
         b_0.storeDict(src.recipients, Dictionary.Keys.Address(), Dictionary.Values.BigInt(257));
     };
 }
 
-export function loadMultiSend(slice: Slice) {
+export function loadClaimUpdate(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 1492397047) { throw Error('Invalid prefix'); }
+    if (sc_0.loadUint(32) !== 1021731786) { throw Error('Invalid prefix'); }
     let _recipients = Dictionary.load(Dictionary.Keys.Address(), Dictionary.Values.BigInt(257), sc_0);
-    return { $$type: 'MultiSend' as const, recipients: _recipients };
+    return { $$type: 'ClaimUpdate' as const, recipients: _recipients };
 }
 
-function loadTupleMultiSend(source: TupleReader) {
+function loadTupleClaimUpdate(source: TupleReader) {
     let _recipients = Dictionary.loadDirect(Dictionary.Keys.Address(), Dictionary.Values.BigInt(257), source.readCellOpt());
-    return { $$type: 'MultiSend' as const, recipients: _recipients };
+    return { $$type: 'ClaimUpdate' as const, recipients: _recipients };
 }
 
-function loadGetterTupleMultiSend(source: TupleReader) {
+function loadGetterTupleClaimUpdate(source: TupleReader) {
     let _recipients = Dictionary.loadDirect(Dictionary.Keys.Address(), Dictionary.Values.BigInt(257), source.readCellOpt());
-    return { $$type: 'MultiSend' as const, recipients: _recipients };
+    return { $$type: 'ClaimUpdate' as const, recipients: _recipients };
 }
 
-function storeTupleMultiSend(source: MultiSend) {
+function storeTupleClaimUpdate(source: ClaimUpdate) {
     let builder = new TupleBuilder();
     builder.writeCell(source.recipients.size > 0 ? beginCell().storeDictDirect(source.recipients, Dictionary.Keys.Address(), Dictionary.Values.BigInt(257)).endCell() : null);
     return builder.build();
 }
 
-function dictValueParserMultiSend(): DictionaryValue<MultiSend> {
+function dictValueParserClaimUpdate(): DictionaryValue<ClaimUpdate> {
     return {
         serialize: (src, builder) => {
-            builder.storeRef(beginCell().store(storeMultiSend(src)).endCell());
+            builder.storeRef(beginCell().store(storeClaimUpdate(src)).endCell());
         },
         parse: (src) => {
-            return loadMultiSend(src.loadRef().beginParse());
+            return loadClaimUpdate(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type JettonTransfer = {
+    $$type: 'JettonTransfer';
+    queryId: bigint;
+    amount: bigint;
+    destination: Address;
+    responseDestination: Address | null;
+    customPayload: Cell | null;
+    forwardTonAmount: bigint;
+    forwardPayload: Slice;
+}
+
+export function storeJettonTransfer(src: JettonTransfer) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(260734629, 32);
+        b_0.storeUint(src.queryId, 64);
+        b_0.storeCoins(src.amount);
+        b_0.storeAddress(src.destination);
+        b_0.storeAddress(src.responseDestination);
+        if (src.customPayload !== null && src.customPayload !== undefined) { b_0.storeBit(true).storeRef(src.customPayload); } else { b_0.storeBit(false); }
+        b_0.storeCoins(src.forwardTonAmount);
+        b_0.storeBuilder(src.forwardPayload.asBuilder());
+    };
+}
+
+export function loadJettonTransfer(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 260734629) { throw Error('Invalid prefix'); }
+    let _queryId = sc_0.loadUintBig(64);
+    let _amount = sc_0.loadCoins();
+    let _destination = sc_0.loadAddress();
+    let _responseDestination = sc_0.loadMaybeAddress();
+    let _customPayload = sc_0.loadBit() ? sc_0.loadRef() : null;
+    let _forwardTonAmount = sc_0.loadCoins();
+    let _forwardPayload = sc_0;
+    return { $$type: 'JettonTransfer' as const, queryId: _queryId, amount: _amount, destination: _destination, responseDestination: _responseDestination, customPayload: _customPayload, forwardTonAmount: _forwardTonAmount, forwardPayload: _forwardPayload };
+}
+
+function loadTupleJettonTransfer(source: TupleReader) {
+    let _queryId = source.readBigNumber();
+    let _amount = source.readBigNumber();
+    let _destination = source.readAddress();
+    let _responseDestination = source.readAddressOpt();
+    let _customPayload = source.readCellOpt();
+    let _forwardTonAmount = source.readBigNumber();
+    let _forwardPayload = source.readCell().asSlice();
+    return { $$type: 'JettonTransfer' as const, queryId: _queryId, amount: _amount, destination: _destination, responseDestination: _responseDestination, customPayload: _customPayload, forwardTonAmount: _forwardTonAmount, forwardPayload: _forwardPayload };
+}
+
+function loadGetterTupleJettonTransfer(source: TupleReader) {
+    let _queryId = source.readBigNumber();
+    let _amount = source.readBigNumber();
+    let _destination = source.readAddress();
+    let _responseDestination = source.readAddressOpt();
+    let _customPayload = source.readCellOpt();
+    let _forwardTonAmount = source.readBigNumber();
+    let _forwardPayload = source.readCell().asSlice();
+    return { $$type: 'JettonTransfer' as const, queryId: _queryId, amount: _amount, destination: _destination, responseDestination: _responseDestination, customPayload: _customPayload, forwardTonAmount: _forwardTonAmount, forwardPayload: _forwardPayload };
+}
+
+function storeTupleJettonTransfer(source: JettonTransfer) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.queryId);
+    builder.writeNumber(source.amount);
+    builder.writeAddress(source.destination);
+    builder.writeAddress(source.responseDestination);
+    builder.writeCell(source.customPayload);
+    builder.writeNumber(source.forwardTonAmount);
+    builder.writeSlice(source.forwardPayload.asCell());
+    return builder.build();
+}
+
+function dictValueParserJettonTransfer(): DictionaryValue<JettonTransfer> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeJettonTransfer(src)).endCell());
+        },
+        parse: (src) => {
+            return loadJettonTransfer(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type Claim = {
+    $$type: 'Claim';
+    amount: bigint;
+}
+
+export function storeClaim(src: Claim) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(1038766039, 32);
+        b_0.storeCoins(src.amount);
+    };
+}
+
+export function loadClaim(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 1038766039) { throw Error('Invalid prefix'); }
+    let _amount = sc_0.loadCoins();
+    return { $$type: 'Claim' as const, amount: _amount };
+}
+
+function loadTupleClaim(source: TupleReader) {
+    let _amount = source.readBigNumber();
+    return { $$type: 'Claim' as const, amount: _amount };
+}
+
+function loadGetterTupleClaim(source: TupleReader) {
+    let _amount = source.readBigNumber();
+    return { $$type: 'Claim' as const, amount: _amount };
+}
+
+function storeTupleClaim(source: Claim) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.amount);
+    return builder.build();
+}
+
+function dictValueParserClaim(): DictionaryValue<Claim> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeClaim(src)).endCell());
+        },
+        parse: (src) => {
+            return loadClaim(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type JettonWalletData = {
+    $$type: 'JettonWalletData';
+    balance: bigint;
+    ownerAddress: Address;
+    jettonMasterAddress: Address;
+    jettonWalletCode: Cell;
+}
+
+export function storeJettonWalletData(src: JettonWalletData) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeCoins(src.balance);
+        b_0.storeAddress(src.ownerAddress);
+        b_0.storeAddress(src.jettonMasterAddress);
+        b_0.storeRef(src.jettonWalletCode);
+    };
+}
+
+export function loadJettonWalletData(slice: Slice) {
+    let sc_0 = slice;
+    let _balance = sc_0.loadCoins();
+    let _ownerAddress = sc_0.loadAddress();
+    let _jettonMasterAddress = sc_0.loadAddress();
+    let _jettonWalletCode = sc_0.loadRef();
+    return { $$type: 'JettonWalletData' as const, balance: _balance, ownerAddress: _ownerAddress, jettonMasterAddress: _jettonMasterAddress, jettonWalletCode: _jettonWalletCode };
+}
+
+function loadTupleJettonWalletData(source: TupleReader) {
+    let _balance = source.readBigNumber();
+    let _ownerAddress = source.readAddress();
+    let _jettonMasterAddress = source.readAddress();
+    let _jettonWalletCode = source.readCell();
+    return { $$type: 'JettonWalletData' as const, balance: _balance, ownerAddress: _ownerAddress, jettonMasterAddress: _jettonMasterAddress, jettonWalletCode: _jettonWalletCode };
+}
+
+function loadGetterTupleJettonWalletData(source: TupleReader) {
+    let _balance = source.readBigNumber();
+    let _ownerAddress = source.readAddress();
+    let _jettonMasterAddress = source.readAddress();
+    let _jettonWalletCode = source.readCell();
+    return { $$type: 'JettonWalletData' as const, balance: _balance, ownerAddress: _ownerAddress, jettonMasterAddress: _jettonMasterAddress, jettonWalletCode: _jettonWalletCode };
+}
+
+function storeTupleJettonWalletData(source: JettonWalletData) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.balance);
+    builder.writeAddress(source.ownerAddress);
+    builder.writeAddress(source.jettonMasterAddress);
+    builder.writeCell(source.jettonWalletCode);
+    return builder.build();
+}
+
+function dictValueParserJettonWalletData(): DictionaryValue<JettonWalletData> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeJettonWalletData(src)).endCell());
+        },
+        parse: (src) => {
+            return loadJettonWalletData(src.loadRef().beginParse());
         }
     }
 }
@@ -613,6 +708,7 @@ export type MultiSendContract$Data = {
     $$type: 'MultiSendContract$Data';
     owner: Address;
     tokenAddress: Address;
+    tokenBalance: bigint;
     recipients: Dictionary<Address, bigint>;
 }
 
@@ -621,6 +717,7 @@ export function storeMultiSendContract$Data(src: MultiSendContract$Data) {
         let b_0 = builder;
         b_0.storeAddress(src.owner);
         b_0.storeAddress(src.tokenAddress);
+        b_0.storeCoins(src.tokenBalance);
         b_0.storeDict(src.recipients, Dictionary.Keys.Address(), Dictionary.Values.BigInt(257));
     };
 }
@@ -629,28 +726,32 @@ export function loadMultiSendContract$Data(slice: Slice) {
     let sc_0 = slice;
     let _owner = sc_0.loadAddress();
     let _tokenAddress = sc_0.loadAddress();
+    let _tokenBalance = sc_0.loadCoins();
     let _recipients = Dictionary.load(Dictionary.Keys.Address(), Dictionary.Values.BigInt(257), sc_0);
-    return { $$type: 'MultiSendContract$Data' as const, owner: _owner, tokenAddress: _tokenAddress, recipients: _recipients };
+    return { $$type: 'MultiSendContract$Data' as const, owner: _owner, tokenAddress: _tokenAddress, tokenBalance: _tokenBalance, recipients: _recipients };
 }
 
 function loadTupleMultiSendContract$Data(source: TupleReader) {
     let _owner = source.readAddress();
     let _tokenAddress = source.readAddress();
+    let _tokenBalance = source.readBigNumber();
     let _recipients = Dictionary.loadDirect(Dictionary.Keys.Address(), Dictionary.Values.BigInt(257), source.readCellOpt());
-    return { $$type: 'MultiSendContract$Data' as const, owner: _owner, tokenAddress: _tokenAddress, recipients: _recipients };
+    return { $$type: 'MultiSendContract$Data' as const, owner: _owner, tokenAddress: _tokenAddress, tokenBalance: _tokenBalance, recipients: _recipients };
 }
 
 function loadGetterTupleMultiSendContract$Data(source: TupleReader) {
     let _owner = source.readAddress();
     let _tokenAddress = source.readAddress();
+    let _tokenBalance = source.readBigNumber();
     let _recipients = Dictionary.loadDirect(Dictionary.Keys.Address(), Dictionary.Values.BigInt(257), source.readCellOpt());
-    return { $$type: 'MultiSendContract$Data' as const, owner: _owner, tokenAddress: _tokenAddress, recipients: _recipients };
+    return { $$type: 'MultiSendContract$Data' as const, owner: _owner, tokenAddress: _tokenAddress, tokenBalance: _tokenBalance, recipients: _recipients };
 }
 
 function storeTupleMultiSendContract$Data(source: MultiSendContract$Data) {
     let builder = new TupleBuilder();
     builder.writeAddress(source.owner);
     builder.writeAddress(source.tokenAddress);
+    builder.writeNumber(source.tokenBalance);
     builder.writeCell(source.recipients.size > 0 ? beginCell().storeDictDirect(source.recipients, Dictionary.Keys.Address(), Dictionary.Values.BigInt(257)).endCell() : null);
     return builder.build();
 }
@@ -679,8 +780,8 @@ function initMultiSendContract_init_args(src: MultiSendContract_init_args) {
 }
 
 async function MultiSendContract_init(tokenAddress: Address) {
-    const __code = Cell.fromBase64('te6ccgECFQEAA7AAART/APSkE/S88sgLAQIBYgIDA3rQAdDTAwFxsKMB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFRQUwNvBPhhAvhi2zxVEts88uCCEQQFAgEgDA0CygGSMH/gcCHXScIflTAg1wsf3iCCEFj0K/e6jpUw0x8BghBY9Cv3uvLggfQEATHbPH/gghCUapi2uo6n0x8BghCUapi2uvLggdM/ATHIAYIQr/kPV1jLH8s/yfhCAXBt2zx/4DBwBgkAnMj4QwHMfwHKAFUgWiDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlgg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxb0AMntVAN0+EFvJBAjXwMkgRFNAscF8vQggQELgQEBWfSCb6UgllAj1wAwWJZsIW0ybQHikIroXwOI+EIBf23bPAcICQD2I4EBCyOBAQFBM/QKb6GUAdcAMJJbbeIgbo4cMBOBAQtSQoEBASFulVtZ9FkwmMgBzwBBM/RB4o4iIG7y0IABoBOBAQtSQoEBASFulVtZ9FkwmMgBzwBBM/RB4uKBAQtUQhSBAQFBM/R0b6UgllAj1wAwWJZsIW0ybQHiABAAAAAAc2VudAE8bW0ibrOZWyBu8tCAbyIBkTLiECRwAwSAQlAj2zwwCgHKyHEBygFQBwHKAHABygJQBSDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlAD+gJwAcpoI26zkX+TJG6z4pczMwFwAcoA4w0hbrOcfwHKAAEgbvLQgAHMlTFwAcoA4skB+wgLAJh/AcoAyHABygBwAcoAJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4iRus51/AcoABCBu8tCAUATMljQDcAHKAOJwAcoAAn8BygACyVjMAgOWUA4PABG+FfdqJoaQAAwCD6Sjtnm2eNhjERACS6QwQa6TAgIXdeXBEEGuFhRBAgn/deWhEwYTdeXBEbZ4qgW2eNhjERIAAiABvO1E0NQB+GPSAAGORvpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAH0BFUgbBPg+CjXCwqDCbry4IkTAESBAQsiAoEBAUEz9ApvoZQB1wAwkltt4iBukjBw4CBu8tCAAUb6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAdHbPBQAFG34QW8kECNfA1k=');
-    const __system = Cell.fromBase64('te6cckECFwEAA7oAAQHAAQEFoMdjAgEU/wD0pBP0vPLICwMCAWIEDQN60AHQ0wMBcbCjAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IhUUFMDbwT4YQL4Yts8VRLbPPLgghIFDALKAZIwf+BwIddJwh+VMCDXCx/eIIIQWPQr97qOlTDTHwGCEFj0K/e68uCB9AQBMds8f+CCEJRqmLa6jqfTHwGCEJRqmLa68uCB0z8BMcgBghCv+Q9XWMsfyz/J+EIBcG3bPH/gMHAGCQN0+EFvJBAjXwMkgRFNAscF8vQggQELgQEBWfSCb6UgllAj1wAwWJZsIW0ybQHikIroXwOI+EIBf23bPAcICQD2I4EBCyOBAQFBM/QKb6GUAdcAMJJbbeIgbo4cMBOBAQtSQoEBASFulVtZ9FkwmMgBzwBBM/RB4o4iIG7y0IABoBOBAQtSQoEBASFulVtZ9FkwmMgBzwBBM/RB4uKBAQtUQhSBAQFBM/R0b6UgllAj1wAwWJZsIW0ybQHiABAAAAAAc2VudAE8bW0ibrOZWyBu8tCAbyIBkTLiECRwAwSAQlAj2zwwCgHKyHEBygFQBwHKAHABygJQBSDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlAD+gJwAcpoI26zkX+TJG6z4pczMwFwAcoA4w0hbrOcfwHKAAEgbvLQgAHMlTFwAcoA4skB+wgLAJh/AcoAyHABygBwAcoAJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4iRus51/AcoABCBu8tCAUATMljQDcAHKAOJwAcoAAn8BygACyVjMAJzI+EMBzH8BygBVIFog10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZYINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8W9ADJ7VQCASAOFgIDllAPEQIPpKO2ebZ42GMSEAACIAJLpDBBrpMCAhd15cEQQa4WFEECCf915aETBhN15cERtniqBbZ42GMSFQG87UTQ1AH4Y9IAAY5G+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAH6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfQEVSBsE+D4KNcLCoMJuvLgiRMBRvpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB0ds8FAAUbfhBbyQQI18DWQBEgQELIgKBAQFBM/QKb6GUAdcAMJJbbeIgbpIwcOAgbvLQgAARvhX3aiaGkAAMTDXowg==');
+    const __code = Cell.fromBase64('te6ccgECEgEABF4AART/APSkE/S88sgLAQIBYgIDA3rQAdDTAwFxsKMB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFRQUwNvBPhhAvhi2zxVE9s88uCCBAUGABGhhX3aiaGkAAMBwO1E0NQB+GPSAAGOSPpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAH6APQEVTBsFOD4KNcLCoMJuvLgiQcDtAGSMH/gcCHXScIflTAg1wsf3iCCEDzmY8q6jpUw0x8BghA85mPKuvLggfQEATHbPH/gIIIQPepP17qOkjDTHwGCED3qT9e68uCB+gABMeCCEJRqmLa64wIwcAkKCwCkyPhDAcx/AcoAVTBQQyDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFgEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZY+gL0AMntVAFG+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAHR2zwIABht+EFvJBAjXwNZcAEDdPhBbyQQI18DJYERTQLHBfL0IIEBC4EBAVn0gm+lIJZQI9cAMFiWbCFtMm0B4pCK6F8DiPhCAX9t2zwMDQ8C8vhBbyQQI18DIoEBCyKBAQFBM/QKb6GUAdcAMJJbbeKCAMwIIW6zmgFwIW6SW3+RveKSMXDi8vSCCvrwgIAq+EL4Qm1xix+AEFYQWMhVYNs8yVRBM38DcEMDbW3bPDCBAQsBcIEBASFulVtZ9FkwmMgBzwBBM/RB4n8OEAFO0x8BghCUapi2uvLggdM/ATHIAYIQr/kPV1jLH8s/yfhCAXBt2zx/DwD2I4EBCyOBAQFBM/QKb6GUAdcAMJJbbeIgbo4cMBOBAQtSQoEBASFulVtZ9FkwmMgBzwBBM/RB4o4iIG7y0IABoBOBAQtSQoEBASFulVtZ9FkwmMgBzwBBM/RB4uKBAQtUQhSBAQFBM/R0b6UgllAj1wAwWJZsIW0ybQHiABAAAAAAc2VudADeghAPin6lUAjLHxbLP1AE+gJYINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WASBulTBwAcsBjh4g10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxbiIW6zlX8BygDMlHAyygDiAfoCAc8WATxtbSJus5lbIG7y0IBvIgGRMuIQJHADBIBCUCPbPDAQAcrIcQHKAVAHAcoAcAHKAlAFINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WUAP6AnABymgjbrORf5MkbrPilzMzAXABygDjDSFus5x/AcoAASBu8tCAAcyVMXABygDiyQH7CBEAmH8BygDIcAHKAHABygAkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDiJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4nABygACfwHKAALJWMw=');
+    const __system = Cell.fromBase64('te6cckECFAEABGgAAQHAAQEFoMdjAgEU/wD0pBP0vPLICwMCAWIEEwN60AHQ0wMBcbCjAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IhUUFMDbwT4YQL4Yts8VRPbPPLgggUIEgHA7UTQ1AH4Y9IAAY5I+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAH6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfoA9ARVMGwU4Pgo1wsKgwm68uCJBgFG+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAHR2zwHABht+EFvJBAjXwNZcAEDtAGSMH/gcCHXScIflTAg1wsf3iCCEDzmY8q6jpUw0x8BghA85mPKuvLggfQEATHbPH/gIIIQPepP17qOkjDTHwGCED3qT9e68uCB+gABMeCCEJRqmLa64wIwcAkMDgN0+EFvJBAjXwMlgRFNAscF8vQggQELgQEBWfSCb6UgllAj1wAwWJZsIW0ybQHikIroXwOI+EIBf23bPAoLDwD2I4EBCyOBAQFBM/QKb6GUAdcAMJJbbeIgbo4cMBOBAQtSQoEBASFulVtZ9FkwmMgBzwBBM/RB4o4iIG7y0IABoBOBAQtSQoEBASFulVtZ9FkwmMgBzwBBM/RB4uKBAQtUQhSBAQFBM/R0b6UgllAj1wAwWJZsIW0ybQHiABAAAAAAc2VudALy+EFvJBAjXwMigQELIoEBAUEz9ApvoZQB1wAwkltt4oIAzAghbrOaAXAhbpJbf5G94pIxcOLy9IIK+vCAgCr4QvhCbXGLH4AQVhBYyFVg2zzJVEEzfwNwQwNtbds8MIEBCwFwgQEBIW6VW1n0WTCYyAHPAEEz9EHifw0QAN6CEA+KfqVQCMsfFss/UAT6Algg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxYBIG6VMHABywGOHiDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFuIhbrOVfwHKAMyUcDLKAOIB+gIBzxYBTtMfAYIQlGqYtrry4IHTPwExyAGCEK/5D1dYyx/LP8n4QgFwbds8fw8BPG1tIm6zmVsgbvLQgG8iAZEy4hAkcAMEgEJQI9s8MBAByshxAcoBUAcBygBwAcoCUAUg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZQA/oCcAHKaCNus5F/kyRus+KXMzMBcAHKAOMNIW6znH8BygABIG7y0IABzJUxcAHKAOLJAfsIEQCYfwHKAMhwAcoAcAHKACRus51/AcoABCBu8tCAUATMljQDcAHKAOIkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDicAHKAAJ/AcoAAslYzACkyPhDAcx/AcoAVTBQQyDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFgEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZY+gL0AMntVAARoYV92omhpAAD908gAA==');
     let builder = beginCell();
     builder.storeRef(__system);
     builder.storeUint(0, 1);
@@ -727,6 +828,7 @@ const MultiSendContract_errors: { [key: number]: { message: string } } = {
     136: { message: `Invalid address` },
     137: { message: `Masterchain support is not enabled for this contract` },
     4429: { message: `Invalid sender` },
+    52232: { message: `No amount to claim` },
 }
 
 const MultiSendContract_types: ABIType[] = [
@@ -738,24 +840,22 @@ const MultiSendContract_types: ABIType[] = [
     {"name":"Deploy","header":2490013878,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
     {"name":"DeployOk","header":2952335191,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
     {"name":"FactoryDeploy","header":1829761339,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"cashback","type":{"kind":"simple","type":"address","optional":false}}]},
-    {"name":"Add","header":2278832834,"fields":[{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":32}}]},
-    {"name":"SampleTactContract$Data","header":null,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"counter","type":{"kind":"simple","type":"uint","optional":false,"format":32}}]},
-    {"name":"MultiSend","header":1492397047,"fields":[{"name":"recipients","type":{"kind":"dict","key":"address","value":"int"}}]},
-    {"name":"MultiSendContract$Data","header":null,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"tokenAddress","type":{"kind":"simple","type":"address","optional":false}},{"name":"recipients","type":{"kind":"dict","key":"address","value":"int"}}]},
+    {"name":"ClaimUpdate","header":1021731786,"fields":[{"name":"recipients","type":{"kind":"dict","key":"address","value":"int"}}]},
+    {"name":"JettonTransfer","header":260734629,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"destination","type":{"kind":"simple","type":"address","optional":false}},{"name":"responseDestination","type":{"kind":"simple","type":"address","optional":true}},{"name":"customPayload","type":{"kind":"simple","type":"cell","optional":true}},{"name":"forwardTonAmount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"forwardPayload","type":{"kind":"simple","type":"slice","optional":false,"format":"remainder"}}]},
+    {"name":"Claim","header":1038766039,"fields":[{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}}]},
+    {"name":"JettonWalletData","header":null,"fields":[{"name":"balance","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"ownerAddress","type":{"kind":"simple","type":"address","optional":false}},{"name":"jettonMasterAddress","type":{"kind":"simple","type":"address","optional":false}},{"name":"jettonWalletCode","type":{"kind":"simple","type":"cell","optional":false}}]},
+    {"name":"MultiSendContract$Data","header":null,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"tokenAddress","type":{"kind":"simple","type":"address","optional":false}},{"name":"tokenBalance","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"recipients","type":{"kind":"dict","key":"address","value":"int"}}]},
 ]
 
 const MultiSendContract_getters: ABIGetter[] = [
-    {"name":"recipients","arguments":[],"returnType":{"kind":"dict","key":"address","value":"int"}},
-    {"name":"claimableToken","arguments":[{"name":"addr","type":{"kind":"simple","type":"address","optional":false}}],"returnType":{"kind":"simple","type":"int","optional":false,"format":257}},
 ]
 
 export const MultiSendContract_getterMapping: { [key: string]: string } = {
-    'recipients': 'getRecipients',
-    'claimableToken': 'getClaimableToken',
 }
 
 const MultiSendContract_receivers: ABIReceiver[] = [
-    {"receiver":"internal","message":{"kind":"typed","type":"MultiSend"}},
+    {"receiver":"internal","message":{"kind":"typed","type":"ClaimUpdate"}},
+    {"receiver":"internal","message":{"kind":"typed","type":"Claim"}},
     {"receiver":"internal","message":{"kind":"typed","type":"Deploy"}},
 ]
 
@@ -789,11 +889,14 @@ export class MultiSendContract implements Contract {
         this.init = init;
     }
     
-    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: MultiSend | Deploy) {
+    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: ClaimUpdate | Claim | Deploy) {
         
         let body: Cell | null = null;
-        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'MultiSend') {
-            body = beginCell().store(storeMultiSend(message)).endCell();
+        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'ClaimUpdate') {
+            body = beginCell().store(storeClaimUpdate(message)).endCell();
+        }
+        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'Claim') {
+            body = beginCell().store(storeClaim(message)).endCell();
         }
         if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'Deploy') {
             body = beginCell().store(storeDeploy(message)).endCell();
@@ -802,21 +905,6 @@ export class MultiSendContract implements Contract {
         
         await provider.internal(via, { ...args, body: body });
         
-    }
-    
-    async getRecipients(provider: ContractProvider) {
-        let builder = new TupleBuilder();
-        let source = (await provider.get('recipients', builder.build())).stack;
-        let result = Dictionary.loadDirect(Dictionary.Keys.Address(), Dictionary.Values.BigInt(257), source.readCellOpt());
-        return result;
-    }
-    
-    async getClaimableToken(provider: ContractProvider, addr: Address) {
-        let builder = new TupleBuilder();
-        builder.writeAddress(addr);
-        let source = (await provider.get('claimableToken', builder.build())).stack;
-        let result = source.readBigNumber();
-        return result;
     }
     
 }

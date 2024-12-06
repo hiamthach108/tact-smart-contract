@@ -20,9 +20,34 @@ builder __tact_store_address(builder b, slice address) inline {
     return b.store_slice(__tact_verify_address(address));
 }
 
+builder __tact_store_address_opt(builder b, slice address) inline {
+    if (null?(address)) {
+        b = b.store_uint(0, 2);
+        return b;
+    } else {
+        return __tact_store_address(b, address);
+    }
+}
+
 forall X -> X __tact_not_null(X x) impure inline {
     throw_if(128, null?(x)); return x;
 }
+
+(cell, int) __tact_dict_delete(cell dict, int key_len, slice index) asm(index dict key_len) """
+    DICTDEL
+""";
+
+(slice, int) __tact_dict_get(cell dict, int key_len, slice index) asm(index dict key_len) """
+    DICTGET NULLSWAPIFNOT
+""";
+
+(slice, slice, int) __tact_dict_min(cell dict, int key_len) asm(dict key_len -> 1 0 2) """
+    DICTMIN  NULLSWAPIFNOT2
+""";
+
+(slice, slice, int) __tact_dict_next(cell dict, int key_len, slice pivot) asm(pivot dict key_len -> 1 0 2) """
+    DICTGETNEXT NULLSWAPIFNOT2
+""";
 
 (int, slice, int, slice) __tact_context_get() inline {
     return __tact_context;
@@ -36,13 +61,61 @@ builder __tact_store_bool(builder b, int v) inline {
     return b.store_int(v, 1);
 }
 
+(cell, ()) __tact_dict_set_slice_int(cell d, int kl, slice k, int v, int vl) inline {
+    if (null?(v)) {
+        var (r, ok) = __tact_dict_delete(d, kl, k);
+        return (r, ());
+    } else {
+        return (dict_set_builder(d, kl, k, begin_cell().store_int(v, vl)), ());
+    }
+}
+
+int __tact_dict_get_slice_int(cell d, int kl, slice k, int vl) inline {
+    var (r, ok) = __tact_dict_get(d, kl, k);
+    if (ok) {
+        return r~load_int(vl);
+    } else {
+        return null();
+    }
+}
+
+(slice, int, int) __tact_dict_min_slice_int(cell d, int kl, int vl) inline {
+    var (key, value, flag) = __tact_dict_min(d, kl);
+    if (flag) {
+        return (key, value~load_int(vl), flag);
+    } else {
+        return (null(), null(), flag);
+    }
+}
+
+(slice, int, int) __tact_dict_next_slice_int(cell d, int kl, slice pivot, int vl) inline {
+    var (key, value, flag) = __tact_dict_next(d, kl, pivot);
+    if (flag) {
+        return (key, value~load_int(vl), flag);
+    } else {
+        return (null(), null(), flag);
+    }
+}
+
 int __tact_slice_eq_bits(slice a, slice b) inline {
     return equal_slices_bits(a, b);
+}
+
+int __tact_int_neq_nullable_one(int a, int b) inline {
+    return (null?(a)) ? (true) : (a != b);
 }
 
 forall X0, X1 -> (X0, X1) __tact_tuple_destroy_2(tuple v) asm """
     2 UNTUPLE
 """;
+
+tuple __tact_string_builder_start(builder b) inline {
+    return tpush(tpush(empty_tuple(), b), null());
+}
+
+tuple __tact_string_builder_start_comment() inline {
+    return __tact_string_builder_start(begin_cell().store_uint(0, 32));
+}
 
 builder $global_beginCell() impure asm """
     NEWC
@@ -115,8 +188,8 @@ int $global_send((int, slice, int, int, cell, cell, cell) $params) impure inline
     return $global_nativeSendMessageReturnForwardFee($c, $params'mode);
 }
 
-((slice, int), ()) $SampleTactContract$_fun_forward((slice, int) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref {
-    var (($self'owner, $self'counter)) = $self;
+((slice, slice, cell), ()) $CocoMonContract$_fun_forward((slice, slice, cell) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref {
+    var (($self'owner, $self'tokenAddress, $self'recipients)) = $self;
     var ($init) = $init;
     cell $code = null();
     cell $data = null();
@@ -132,21 +205,21 @@ int $global_send((int, slice, int, int, cell, cell, cell) $params) impure inline
         if (($balanceBeforeMessage < 0)) {
             $global_nativeReserve(0, 0);
             $global_send($SendParameters$_constructor_bounce_to_value_mode_body_code_data($bounce, $to, 0, 130, $body, $code, $data));
-            return (($self'owner, $self'counter), ());
+            return (($self'owner, $self'tokenAddress, $self'recipients), ());
         }
     }
     $global_send($SendParameters$_constructor_bounce_to_value_mode_body_code_data($bounce, $to, 0, 66, $body, $code, $data));
-    return (($self'owner, $self'counter), ());
+    return (($self'owner, $self'tokenAddress, $self'recipients), ());
 }
 
-((slice, int), ()) $SampleTactContract$_fun_reply((slice, int) $self, cell $body) impure inline {
-    var (($self'owner, $self'counter)) = $self;
-    ($self'owner, $self'counter)~$SampleTactContract$_fun_forward(__tact_context_get_sender(), $body, true, null());
-    return (($self'owner, $self'counter), ());
+((slice, slice, cell), ()) $CocoMonContract$_fun_reply((slice, slice, cell) $self, cell $body) impure inline {
+    var (($self'owner, $self'tokenAddress, $self'recipients)) = $self;
+    ($self'owner, $self'tokenAddress, $self'recipients)~$CocoMonContract$_fun_forward(__tact_context_get_sender(), $body, true, null());
+    return (($self'owner, $self'tokenAddress, $self'recipients), ());
 }
 
-((slice, int), ()) $SampleTactContract$_fun_notify((slice, int) $self, cell $body) impure inline {
-    var (($self'owner, $self'counter)) = $self;
-    ($self'owner, $self'counter)~$SampleTactContract$_fun_forward(__tact_context_get_sender(), $body, false, null());
-    return (($self'owner, $self'counter), ());
+((slice, slice, cell), ()) $CocoMonContract$_fun_notify((slice, slice, cell) $self, cell $body) impure inline {
+    var (($self'owner, $self'tokenAddress, $self'recipients)) = $self;
+    ($self'owner, $self'tokenAddress, $self'recipients)~$CocoMonContract$_fun_forward(__tact_context_get_sender(), $body, false, null());
+    return (($self'owner, $self'tokenAddress, $self'recipients), ());
 }

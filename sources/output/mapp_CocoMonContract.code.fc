@@ -1,0 +1,173 @@
+#pragma version =0.4.4;
+#pragma allow-post-modification;
+#pragma compute-asm-ltr;
+
+#include "mapp_CocoMonContract.headers.fc";
+#include "mapp_CocoMonContract.stdlib.fc";
+#include "mapp_CocoMonContract.constants.fc";
+#include "mapp_CocoMonContract.storage.fc";
+
+;;
+;; Contract CocoMonContract functions
+;;
+
+(slice, slice, cell) $CocoMonContract$_contract_init(slice $tokenAddress) impure inline_ref {
+    var (($self'owner, $self'tokenAddress, $self'recipients)) = (null(), null(), null());
+    $self'owner = $Context$_get_sender(__tact_context_get());
+    $self'tokenAddress = $tokenAddress;
+    return ($self'owner, $self'tokenAddress, $self'recipients);
+}
+
+((slice, slice, cell), ()) $CocoMonContract$_fun_updateClaim((slice, slice, cell) $self, cell $recipients) impure inline_ref {
+    var (($self'owner, $self'tokenAddress, $self'recipients)) = $self;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    throw_unless(4429, ( __tact_slice_eq_bits($self'owner, $ctx'sender) ));
+    var ($recipient, $amount, $fresh$flag_0) = __tact_dict_min_slice_int($recipients, 267, 257);
+    while ($fresh$flag_0) {
+        tuple $cmt = __tact_string_builder_start_comment();
+        int $old = __tact_dict_get_slice_int($self'recipients, 267, $recipient, 257);
+        if (null?($old)) {
+            $self'recipients~__tact_dict_set_slice_int(267, $recipient, $amount, 257);
+        } else {
+            int $new = (__tact_not_null($old) + $amount);
+            $self'recipients~__tact_dict_set_slice_int(267, $recipient, $new, 257);
+        }
+        ($recipient, $amount, $fresh$flag_0) = __tact_dict_next_slice_int($recipients, 267, $recipient, 257);
+    }
+    ($self'owner, $self'tokenAddress, $self'recipients)~$CocoMonContract$_fun_reply(__gen_cell_comment_8ce5c8027b6d8bd6084aedd3411e4d8d7f1ad449598bfb3088fefafd7774b02e());
+    return (($self'owner, $self'tokenAddress, $self'recipients), ());
+}
+
+((slice, slice, cell), int) $CocoMonContract$_fun_claimable((slice, slice, cell) $self, slice $adr) impure inline_ref {
+    var (($self'owner, $self'tokenAddress, $self'recipients)) = $self;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    int $amount = __tact_dict_get_slice_int($self'recipients, 267, $adr, 257);
+    if (null?($amount)) {
+        var $fresh$ret_1 = 0;
+        return (($self'owner, $self'tokenAddress, $self'recipients), $fresh$ret_1);
+    } else {
+        var $fresh$ret_2 = __tact_not_null($amount);
+        return (($self'owner, $self'tokenAddress, $self'recipients), $fresh$ret_2);
+    }
+}
+
+((slice, slice, cell), cell) $CocoMonContract$_fun_recipients((slice, slice, cell) $self) impure inline_ref {
+    var (($self'owner, $self'tokenAddress, $self'recipients)) = $self;
+    var $fresh$ret_3 = $self'recipients;
+    return (($self'owner, $self'tokenAddress, $self'recipients), $fresh$ret_3);
+}
+
+;;
+;; Receivers of a Contract CocoMonContract
+;;
+
+(((slice, slice, cell)), ()) $CocoMonContract$_internal_binary_ClaimUpdate((slice, slice, cell) $self, (cell) $msg) impure inline {
+    var ($self'owner, $self'tokenAddress, $self'recipients) = $self;
+    var ($msg'recipients) = $msg;
+    ($self'owner, $self'tokenAddress, $self'recipients)~$CocoMonContract$_fun_updateClaim($msg'recipients);
+    return (($self'owner, $self'tokenAddress, $self'recipients), ());
+}
+
+(((slice, slice, cell)), ()) $CocoMonContract$_internal_binary_Claim((slice, slice, cell) $self, (int) $msg) impure inline {
+    var ($self'owner, $self'tokenAddress, $self'recipients) = $self;
+    var ($msg'amount) = $msg;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    int $amount = __tact_dict_get_slice_int($self'recipients, 267, $ctx'sender, 257);
+    throw_unless(52232, ( ((~ null?($amount))) ? (__tact_int_neq_nullable_one($amount, 0)) : (false) ));
+    throw_unless(58682, ($msg'amount <= __tact_not_null($amount)));
+    $global_send($SendParameters$_constructor_to_value_body($ctx'sender, 50000000, $JettonTransfer$_store_cell($JettonTransfer$_constructor_queryId_amount_destination_responseDestination_customPayload_forwardTonAmount_forwardPayload(42, ($msg'amount - __tact_not_null($amount)), __tact_context_get_sender(), __tact_context_get_sender(), null(), 1, __gen_slice_slice_5dcf118847f69faec2c995cb99acf92d70cfe3223342f66c96b504350c5d5b19()))));
+    $self'recipients~__tact_dict_set_slice_int(267, $ctx'sender, ($msg'amount - __tact_not_null($amount)), 257);
+    return (($self'owner, $self'tokenAddress, $self'recipients), ());
+}
+
+(((slice, slice, cell)), ()) $CocoMonContract$_internal_binary_Deploy((slice, slice, cell) $self, (int) $deploy) impure inline {
+    var ($self'owner, $self'tokenAddress, $self'recipients) = $self;
+    var ($deploy'queryId) = $deploy;
+    ($self'owner, $self'tokenAddress, $self'recipients)~$CocoMonContract$_fun_notify($DeployOk$_store_cell($DeployOk$_constructor_queryId($deploy'queryId)));
+    return (($self'owner, $self'tokenAddress, $self'recipients), ());
+}
+
+;;
+;; Get methods of a Contract CocoMonContract
+;;
+
+_ %claimable(slice $adr) method_id(116064) {
+    slice $adr = __tact_verify_address($adr);
+    var self = $CocoMonContract$_contract_load();
+    var res = self~$CocoMonContract$_fun_claimable($adr);
+    return res;
+}
+
+_ %recipients() method_id(84049) {
+    var self = $CocoMonContract$_contract_load();
+    var res = self~$CocoMonContract$_fun_recipients();
+    return res;
+}
+
+_ lazy_deployment_completed() method_id {
+    return get_data().begin_parse().load_int(1);
+}
+
+;;
+;; Routing of a Contract CocoMonContract
+;;
+
+((slice, slice, cell), int) $CocoMonContract$_contract_router_internal((slice, slice, cell) self, int msg_bounced, slice in_msg) impure inline_ref {
+    ;; Handle bounced messages
+    if (msg_bounced) {
+        return (self, true);
+    }
+    
+    ;; Parse incoming message
+    int op = 0;
+    if (slice_bits(in_msg) >= 32) {
+        op = in_msg.preload_uint(32);
+    }
+    
+    
+    ;; Receive ClaimUpdate message
+    if (op == 1021731786) {
+        var msg = in_msg~$ClaimUpdate$_load();
+        self~$CocoMonContract$_internal_binary_ClaimUpdate(msg);
+        return (self, true);
+    }
+    
+    ;; Receive Claim message
+    if (op == 1038766039) {
+        var msg = in_msg~$Claim$_load();
+        self~$CocoMonContract$_internal_binary_Claim(msg);
+        return (self, true);
+    }
+    
+    ;; Receive Deploy message
+    if (op == 2490013878) {
+        var msg = in_msg~$Deploy$_load();
+        self~$CocoMonContract$_internal_binary_Deploy(msg);
+        return (self, true);
+    }
+    
+    return (self, false);
+}
+
+() recv_internal(int msg_value, cell in_msg_cell, slice in_msg) impure {
+    
+    ;; Context
+    var cs = in_msg_cell.begin_parse();
+    var msg_flags = cs~load_uint(4);
+    var msg_bounced = -(msg_flags & 1);
+    slice msg_sender_addr = __tact_verify_address(cs~load_msg_addr());
+    __tact_context = (msg_bounced, msg_sender_addr, msg_value, cs);
+    __tact_context_sender = msg_sender_addr;
+    
+    ;; Load contract data
+    var self = $CocoMonContract$_contract_load();
+    
+    ;; Handle operation
+    int handled = self~$CocoMonContract$_contract_router_internal(msg_bounced, in_msg);
+    
+    ;; Throw if not handled
+    throw_unless(130, handled);
+    
+    ;; Persist state
+    $CocoMonContract$_contract_store(self);
+}
