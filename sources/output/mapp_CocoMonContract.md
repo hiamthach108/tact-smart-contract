@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: CocoMonContract
-BOC Size: 1255 bytes
+BOC Size: 1396 bytes
 
 # Types
 Total Types: 13

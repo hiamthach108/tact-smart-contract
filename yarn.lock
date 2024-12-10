@@ -3014,6 +3014,11 @@ to-regex-range@^5.0.1:
   dependencies:
     is-number "^7.0.0"
 
+ton-contract-executor@^0.8.4:
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/ton-contract-executor/-/ton-contract-executor-0.8.4.tgz#da8ddf90cb23cab9f8247b96a0a8c329c9157230"
+  integrity sha512-KzDibJiifrxd1a0IW6A2z0jBEFm9kq31FtiveSzvI1MsAJ0CvtInx4jRQGfXKwZy9wxdJUos+1rBb4kMnJZH5w==
+
 tr46@~0.0.3:
   version "0.0.3"
   resolved "https://registry.npmjs.org/tr46/-/tr46-0.0.3.tgz"

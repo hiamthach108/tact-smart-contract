@@ -28,25 +28,6 @@ struct JettonWalletData {
     jettonWalletCode: Cell;
 }
 
-fun calculateJettonWalletAddress(
-    ownerAddress: Address,
-    jettonMasterAddress: Address,
-    jettonWalletCode: Cell,
-): Address {
-
-    let initData = JettonWalletData{
-        balance: 0,
-        ownerAddress,
-        jettonMasterAddress,
-        jettonWalletCode,
-    };
-
-    return contractAddress(StateInit{
-        code: jettonWalletCode,
-        data: initData.toCell(),
-    });
-}
-
 contract CocoMonContract with Deployable {
     owner: Address;
     tokenAddress: Address;
@@ -87,7 +68,7 @@ contract CocoMonContract with Deployable {
         require(msg.amount <= amount!!, "Amount to claim is too big");
 
         send(SendParameters{
-            to: ctx.sender, 
+            to: self.tokenAddress, 
             value: JettonTransferGas, 
             body: JettonTransfer{
                 queryId: 42,

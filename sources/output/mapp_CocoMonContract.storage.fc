@@ -147,8 +147,6 @@ builder $CocoMonContract$_store(builder build_0, (slice, slice, cell) v) inline 
     if ($loaded) {
         return $sc~$CocoMonContract$_load();
     } else {
-        ;; Allow only workchain deployments
-        throw_unless(137, my_address().preload_uint(11) == 1024);
         (slice $tokenAddress) = $sc~$CocoMonContract$init$_load();
         $sc.end_parse();
         return $CocoMonContract$_contract_init($tokenAddress);

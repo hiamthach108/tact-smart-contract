@@ -1,19 +1,21 @@
 {
-    "projects": [{
-        "name": "mapp",
-        "path": "./sources/contract.tact",
-        "output": "./sources/output",
-        "mode": "full",
-        "options": {
-            "external": false,
-            "debug": false,
-            "masterchain": false,
-            "ipfsAbiGetter": false,
-            "interfacesGetter": false,
-            "experimental": {
-                "inline": false
+    "projects": [
+        {
+            "name": "mapp",
+            "path": "./sources/contract.tact",
+            "output": "./sources/output",
+            "mode": "full",
+            "options": {
+                "external": true,
+                "debug": true,
+                "masterchain": true,
+                "ipfsAbiGetter": true,
+                "interfacesGetter": true,
+                "experimental": {
+                    "inline": false
+                }
             }
         }
-    }]
+    ],
+    "$schema": "http://raw.githubusercontent.com/tact-lang/tact/main/schemas/configSchema.json"
 }
-
