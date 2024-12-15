@@ -1,0 +1,1078 @@
+ode_modules\@tact-lang\compiler\stdlib\stdlib.fc` `D:\Work\Personal\tact-smart-contract
+ode_modules\@tact-lang\compiler\stdlib\stdlib_ex.fc` `D:/Work/Personal/tact-smart-contract/sources/output/mapp_MimiappContract.code.fc` incl:`D:/Work/Personal/tact-smart-contract/sources/output/mapp_MimiappContract.headers.fc` incl:`D:/Work/Personal/tact-smart-contract/sources/output/mapp_MimiappContract.stdlib.fc` incl:`D:/Work/Personal/tact-smart-contract/sources/output/mapp_MimiappContract.constants.fc` incl:`D:/Work/Personal/tact-smart-contract/sources/output/mapp_MimiappContract.storage.fc` 
+PROGRAM{
+  DECLPROC __tact_verify_address
+  DECLPROC __tact_load_address
+  DECLPROC __tact_store_address
+  DECLPROC __tact_store_address_opt
+  DECLPROC __tact_create_address
+  DECLPROC __tact_compute_contract_address
+  DECLPROC __tact_not_null
+  DECLPROC __tact_context_get
+  DECLPROC __tact_context_get_sender
+  DECLPROC __tact_store_bool
+  DECLPROC __tact_dict_set_slice_int
+  DECLPROC __tact_dict_get_slice_int
+  DECLPROC __tact_slice_eq_bits
+  DECLPROC __tact_int_neq_nullable_one
+  DECLPROC __tact_string_builder_start
+  DECLPROC __tact_string_builder_start_comment
+  DECLPROC __tact_string_builder_end
+  DECLPROC __tact_string_builder_append
+  DECLPROC __tact_int_to_string
+  DECLPROC $Deploy$_load
+  DECLPROC $DeployOk$_store
+  DECLPROC $DeployOk$_store_cell
+  DECLPROC $WithdrawUpdate$_load
+  DECLPROC $JettonTransfer$_store
+  DECLPROC $JettonTransfer$_store_cell
+  DECLPROC $JettonTransferNotification$_load
+  DECLPROC $JettonWalletData$_store
+  DECLPROC $JettonWalletData$_store_cell
+  DECLPROC $MimiappContract$_store
+  DECLPROC $MimiappContract$_load
+  DECLPROC $StateInit$_not_null
+  DECLPROC $Context$_get_sender
+  DECLPROC $MimiappContract$init$_load
+  DECLPROC $JettonWalletData$_constructor_balance_ownerAddress_jettonMasterAddress_jettonWalletCode
+  DECLPROC $global_contractAddress
+  DECLPROC $StateInit$_constructor_code_data
+  DECLPROC $global_calculateJettonWalletAddress
+  DECLPROC $MimiappContract$_contract_init
+  DECLPROC $MimiappContract$_contract_load
+  DECLPROC $MimiappContract$_contract_store
+  DECLPROC $global_send
+  DECLPROC $MimiappContract$_fun_updateWithdraw
+  DECLPROC $MimiappContract$_fun_claimable
+  DECLPROC $MimiappContract$_fun_recipients
+  DECLPROC $MimiappContract$_fun_totalWithdrawn
+  DECLPROC $MimiappContract$_fun_totalClaimed
+  DECLPROC $MimiappContract$_fun_tokenAddress
+  DECLPROC $MimiappContract$_fun_myJettonWalletAddress
+  DECLPROC $MimiappContract$_fun_myJettonAmount
+  DECLPROC $SendParameters$_constructor_bounce_to_value_mode_body_code_data
+  DECLPROC $MimiappContract$_fun_forward
+  DECLPROC $MimiappContract$_fun_reply
+  DECLPROC $MimiappContract$_fun_notify
+  DECLPROC $SendParameters$_constructor_to_value_body
+  DECLPROC $JettonTransfer$_constructor_queryId_amount_destination_responseDestination_customPayload_forwardTonAmount_forwardPayload
+  DECLPROC $DeployOk$_constructor_queryId
+  DECLPROC $MimiappContract$_internal_binary_JettonTransferNotification
+  DECLPROC $MimiappContract$_internal_binary_WithdrawUpdate
+  DECLPROC $MimiappContract$_internal_text_535d44514554aee036c09a39063fe878ca30a50cb9b5f8f6f1ec24f13e3169e9
+  DECLPROC $MimiappContract$_internal_text_5ee407654da4f1c61e32aaa5b1d3010f4ccea3cc166ea9ac24250fec0df1fd94
+  DECLPROC $MimiappContract$_internal_binary_Deploy
+  116064 DECLMETHOD %claimable
+  84049 DECLMETHOD %recipients
+  121305 DECLMETHOD %totalWithdrawn
+  88127 DECLMETHOD %totalClaimed
+  106685 DECLMETHOD %tokenAddress
+  68055 DECLMETHOD %myJettonWalletAddress
+  97477 DECLMETHOD %myJettonAmount
+  113617 DECLMETHOD supported_interfaces
+  121275 DECLMETHOD get_abi_ipfs
+  115390 DECLMETHOD lazy_deployment_completed
+  DECLPROC $MimiappContract$_contract_router_internal
+  DECLPROC recv_internal
+  DECLGLOBVAR __tact_context
+  DECLGLOBVAR __tact_context_sender
+  DECLGLOBVAR __tact_context_sys
+  DECLGLOBVAR __tact_randomized
+  __tact_verify_address PROCINLINE:<{
+    DUP
+    SBITS
+    267 PUSHINT
+    EQUAL
+    136 THROWIFNOT
+    DUP
+    11 PLDU
+    DUP
+    10 PUSHPOW2
+    EQUAL
+    SWAP
+    1279 PUSHINT
+    EQUAL
+    OR
+    136 THROWIFNOT
+  }>
+  __tact_load_address PROCINLINE:<{
+    LDMSGADDR
+    SWAP
+    __tact_verify_address INLINECALLDICT
+  }>
+  __tact_store_address PROCINLINE:<{
+    __tact_verify_address INLINECALLDICT
+    STSLICER
+  }>
+  __tact_store_address_opt PROCINLINE:<{
+    DUP
+    ISNULL
+    IF:<{
+      DROP
+      0 PUSHINT
+      SWAP
+      2 STU
+    }>ELSE<{
+      __tact_store_address INLINECALLDICT
+    }>
+  }>
+  __tact_create_address PROCINLINE:<{
+    NEWC
+    2 PUSHINT
+    SWAP
+    2 STU
+    0 PUSHINT
+    SWAP
+    1 STU
+    s1 s2 XCHG
+    8 STI
+    256 STU
+    ENDC
+    CTOS
+    __tact_verify_address INLINECALLDICT
+  }>
+  __tact_compute_contract_address PROCINLINE:<{
+    NEWC
+    0 PUSHINT
+    SWAP
+    2 STU
+    3 PUSHINT
+    SWAP
+    2 STU
+    0 PUSHINT
+    SWAP
+    1 STU
+    s1 s2 XCHG
+    STREF
+    STREF
+    ENDC
+    HASHCU
+    __tact_create_address INLINECALLDICT
+  }>
+  __tact_not_null PROCINLINE:<{
+    DUP
+    ISNULL
+    128 THROWIF
+  }>
+  __tact_context_get PROCINLINE:<{
+    __tact_context GETGLOB
+    4 UNTUPLE
+  }>
+  __tact_context_get_sender PROCINLINE:<{
+    __tact_context_sender GETGLOB
+  }>
+  __tact_store_bool PROCINLINE:<{
+    SWAP
+    1 STI
+  }>
+  __tact_dict_set_slice_int PROCINLINE:<{
+    OVER
+    ISNULL
+    IF:<{
+      2DROP
+      -ROT
+          DICTDEL
+      DROP
+    }>ELSE<{
+      NEWC
+      SWAP
+      STIX
+      s1 s3 s3 XCHG3
+      DICTSETB
+    }>
+  }>
+  __tact_dict_get_slice_int PROCINLINE:<{
+    s1 s3 s3 XCHG3
+        DICTGET NULLSWAPIFNOT
+    IF:<{
+      SWAP
+      LDIX
+      DROP
+    }>ELSE<{
+      2DROP
+      PUSHNULL
+    }>
+  }>
+  __tact_slice_eq_bits PROCINLINE:<{
+    SDEQ
+  }>
+  __tact_int_neq_nullable_one PROCINLINE:<{
+    OVER
+    ISNULL
+    IF:<{
+      2DROP
+      TRUE
+    }>ELSE<{
+      NEQ
+    }>
+  }>
+  __tact_string_builder_start PROCINLINE:<{
+    NIL
+    SWAP
+    TPUSH
+    PUSHNULL
+    TPUSH
+  }>
+  __tact_string_builder_start_comment PROCINLINE:<{
+    NEWC
+    0 PUSHINT
+    SWAP
+    32 STU
+    __tact_string_builder_start INLINECALLDICT
+  }>
+  __tact_string_builder_end PROCINLINE:<{
+    UNCONS
+    SWAP
+    ENDC
+    WHILE:<{
+      OVER
+      ISNULL
+      NOT
+    }>DO<{
+      SWAP
+      UNCONS
+      -ROT
+      STREF
+      ENDC
+    }>
+    NIP
+  }>
+  __tact_string_builder_append PROCREF:<{
+    DUP
+    SREFS
+    OVER
+    SBITS
+    WHILE:<{
+      DUP
+      0 GTINT
+      s2 PUSH
+      0 GTINT
+      OR
+    }>DO<{
+      s0 s3 XCHG
+      UNCONS
+      127 PUSHINT
+      s2 PUSH
+      BBITS
+      3 RSHIFT#
+      SUB
+      s0 s5 XCHG
+      3 RSHIFT#
+      s5 s5 XCPU
+      MIN
+      DUP
+      0 GTINT
+      IF:<{
+        DUP
+        3 LSHIFT#
+        s1 s5 XCHG
+        LDSLICEX
+        s3 s3 XCHG2
+        STSLICER
+        s0 s1 s4 XCHG3
+      }>
+      -ROT
+      CONS
+      s4 s1 PUSH2
+      SUB
+      0 GTINT
+      IF:<{
+        NEWC
+        SWAP
+        CONS
+        s4 s4 XCHG2
+        SUB
+        3 LSHIFT#
+      }>ELSE<{
+        NIP
+        s3 POP
+        0 GTINT
+        IF:<{
+          LDREF
+          DROP
+          CTOS
+          DUP
+          SREFS
+          OVER
+          SBITS
+        }>ELSE<{
+          0 PUSHINT
+          DUP
+        }>
+      }>
+    }>
+    3 BLKDROP
+  }>
+  __tact_int_to_string PROCREF:<{
+    NEWC
+    OVER
+    0 LESSINT
+    IF:<{
+      45 PUSHINT
+      SWAP
+      8 STU
+      SWAP
+      NEGATE
+      SWAP
+    }>
+    OVER
+    1000000000000000000000000000000 PUSHINTX
+    LESS
+    IF:<{
+      0 PUSHINT
+      DUP
+      1 PUSHINT
+      UNTIL:<{
+        s0 s4 XCHG
+        10 PUSHINT
+        DIVMOD
+        48 ADDCONST
+        s5 PUSH
+        MUL
+        s1 s2 XCHG
+        ADD
+        s0 s4 XCHG
+        8 LSHIFT#
+        s0 s2 XCHG
+        INC
+        OVER
+        0 EQINT
+        s5 s3 s0 XCHG3
+      }>
+      DROP
+      s3 POP
+      3 LSHIFT#
+      STUX
+    }>ELSE<{
+      NIL
+      0 PUSHINT
+      UNTIL:<{
+        s3 PUSH
+        10 PUSHINT
+        MOD
+        s1 s2 XCHG
+        TPUSH
+        SWAP
+        INC
+        s0 s3 XCHG
+        10 PUSHINT
+        DIV
+        DUP
+        0 EQINT
+        s1 s4 XCHG
+      }>
+      s3 POP
+      s2 PUSH
+      DEC
+      s0 s3 XCHG
+      REPEAT:<{
+        s0 s2 PUSH2
+        INDEXVAR
+        48 ADDCONST
+        ROT
+        8 STU
+        s0 s2 XCHG
+        DEC
+        -ROT
+      }>
+      DROP
+      NIP
+    }>
+    ENDC
+    CTOS
+  }>
+  $Deploy$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    2490013878 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    64 LDU
+    SWAP
+  }>
+  $DeployOk$_store PROCINLINE:<{
+    2952335191 PUSHINT
+    ROT
+    32 STU
+    64 STU
+  }>
+  $DeployOk$_store_cell PROCINLINE:<{
+    NEWC
+    SWAP
+    $DeployOk$_store INLINECALLDICT
+    ENDC
+  }>
+  $WithdrawUpdate$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    462494594 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    LDVARUINT16
+    __tact_load_address INLINECALLDICT
+    s1 s2 XCHG
+  }>
+  $JettonTransfer$_store PROCREF:<{
+    260734629 PUSHINT
+    s0 s8 XCHG2
+    32 STU
+    s1 s6 XCHG
+    64 STU
+    s0 s4 XCHG2
+    STVARUINT16
+    ROT
+    __tact_store_address INLINECALLDICT
+    SWAP
+    __tact_store_address_opt INLINECALLDICT
+    OVER
+    ISNULL
+    NOT
+    IF:<{
+      TRUE
+      SWAP
+      1 STI
+      STREF
+    }>ELSE<{
+      FALSE
+      s2 POP
+      1 STI
+    }>
+    SWAP
+    STVARUINT16
+    SWAP
+    STSLICER
+  }>
+  $JettonTransfer$_store_cell PROCINLINE:<{
+    NEWC
+    7 -ROLL
+    $JettonTransfer$_store INLINECALLDICT
+    ENDC
+  }>
+  $JettonTransferNotification$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    1935855772 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    64 LDU
+    LDVARUINT16
+    __tact_load_address INLINECALLDICT
+    s3 s0 s3 XC2PU
+    s2 s3 XCHG
+  }>
+  $JettonWalletData$_store PROCINLINE:<{
+    s4 s3 XCHG2
+    STVARUINT16
+    SWAP
+    __tact_store_address INLINECALLDICT
+    ROT
+    __tact_store_address INLINECALLDICT
+    STREF
+  }>
+  $JettonWalletData$_store_cell PROCINLINE:<{
+    NEWC
+    4 -ROLL
+    $JettonWalletData$_store INLINECALLDICT
+    ENDC
+  }>
+  $MimiappContract$_store PROCINLINE:<{
+    s7 s6 XCHG2
+    __tact_store_address INLINECALLDICT
+    s0 s4 XCHG2
+    __tact_store_address INLINECALLDICT
+    s1 s2 XCHG
+    STDICT
+    257 PUSHINT
+    STIX
+    SWAP
+    NEWC
+    257 PUSHINT
+    STIX
+    s0 s3 XCHG2
+    __tact_store_address INLINECALLDICT
+    SWAP
+    STVARUINT16
+    ENDC
+    SWAP
+    STREF
+  }>
+  $MimiappContract$_load PROCINLINE:<{
+    __tact_load_address INLINECALLDICT
+    SWAP
+    __tact_load_address INLINECALLDICT
+    SWAP
+    LDDICT
+    257 PUSHINT
+    LDIX
+    LDREF
+    SWAP
+    CTOS
+    257 PUSHINT
+    LDIX
+    __tact_load_address INLINECALLDICT
+    SWAP
+    LDVARUINT16
+    DROP
+    s3 s7 XCHG
+    s3 s6 XCHG
+    s3 s5 XCHG
+    s3 s4 XCHG
+  }>
+  $StateInit$_not_null PROCINLINE:<{
+    DUP
+    ISNULL
+    128 THROWIF
+        2 UNTUPLE
+  }>
+  $Context$_get_sender PROCINLINE:<{
+    s2 s3 XCHG
+    3 BLKDROP
+  }>
+  $MimiappContract$init$_load PROCINLINE:<{
+    __tact_load_address INLINECALLDICT
+    SWAP
+    LDREF
+    -ROT
+  }>
+  $JettonWalletData$_constructor_balance_ownerAddress_jettonMasterAddress_jettonWalletCode PROCINLINE:<{
+  }>
+  $global_contractAddress PROCINLINE:<{
+    0 PUSHINT
+    -ROT
+    __tact_compute_contract_address INLINECALLDICT
+  }>
+  $StateInit$_constructor_code_data PROCINLINE:<{
+  }>
+  $global_calculateJettonWalletAddress PROCREF:<{
+    0 PUSHINT
+    s3 s2 s3 XC2PU
+    $JettonWalletData$_constructor_balance_ownerAddress_jettonMasterAddress_jettonWalletCode INLINECALLDICT
+    $JettonWalletData$_store_cell INLINECALLDICT
+    $StateInit$_constructor_code_data INLINECALLDICT
+    $global_contractAddress INLINECALLDICT
+  }>
+  $MimiappContract$_contract_init PROCREF:<{
+    0 PUSHINT
+    __tact_context_get INLINECALLDICT
+    $Context$_get_sender INLINECALLDICT
+    s3 PUSH
+    PUSHNULL
+    s3 s3 PUSH2
+        MYADDR
+    s0 s8 s7 XCHG3
+    $global_calculateJettonWalletAddress INLINECALLDICT
+    s3 s6 XCHG
+    s5 s4 s0 XCHG3
+    s3 s0 s0 XCHG3
+  }>
+  $MimiappContract$_contract_load PROCREF:<{
+    c4 PUSH
+    CTOS
+    LDREF
+    SWAP
+    __tact_context_sys SETGLOB
+    1 LDI
+    SWAP
+    IFJMP:<{
+      $MimiappContract$_load INLINECALLDICT
+      1 7 BLKDROP2
+    }>
+    $MimiappContract$init$_load INLINECALLDICT
+    s0 s2 XCHG
+    ENDS
+    SWAP
+    $MimiappContract$_contract_init INLINECALLDICT
+  }>
+  $MimiappContract$_contract_store PROCINLINE:<{
+    NEWC
+    __tact_context_sys GETGLOB
+    SWAP
+    STREF
+    TRUE
+    SWAP
+    1 STI
+    7 -ROLL
+    $MimiappContract$_store INLINECALLDICT
+    ENDC
+    c4 POP
+  }>
+  $global_send PROCREF:<{
+        NEWC
+    1 PUSHINT
+    SWAP
+    2 STI
+    s0 s7 XCHG2
+    __tact_store_bool INLINECALLDICT
+    0 PUSHINT
+    SWAP
+    3 STI
+    s0 s5 XCHG2
+    __tact_store_address INLINECALLDICT
+    s0 s3 XCHG2
+        STVARUINT16
+    0 PUSHINT
+    SWAP
+    105 STI
+    s3 PUSH
+    ISNULL
+    NOT
+    IF:<{
+      TRUE
+    }>ELSE<{
+      s4 PUSH
+      ISNULL
+      NOT
+    }>
+    IF:<{
+      TRUE
+      __tact_store_bool INLINECALLDICT
+          NEWC
+      FALSE
+      __tact_store_bool INLINECALLDICT
+      FALSE
+      __tact_store_bool INLINECALLDICT
+      s4 PUSH
+      ISNULL
+      NOT
+      IF:<{
+        TRUE
+        __tact_store_bool INLINECALLDICT
+        s0 s4 XCHG
+        __tact_not_null INLINECALLDICT
+        s0 s4 XCHG2
+            STREF
+      }>ELSE<{
+        s4 POP
+        s0 s3 XCHG
+        FALSE
+        __tact_store_bool INLINECALLDICT
+      }>
+      s4 PUSH
+      ISNULL
+      NOT
+      IF:<{
+        TRUE
+        __tact_store_bool INLINECALLDICT
+        s0 s4 XCHG
+        __tact_not_null INLINECALLDICT
+        s0 s4 XCHG2
+            STREF
+      }>ELSE<{
+        s4 POP
+        s0 s3 XCHG
+        FALSE
+        __tact_store_bool INLINECALLDICT
+      }>
+      FALSE
+      __tact_store_bool INLINECALLDICT
+      s0 s2 XCHG
+      TRUE
+      __tact_store_bool INLINECALLDICT
+      s0 s2 XCHG
+          ENDC
+      ROT
+          STREF
+    }>ELSE<{
+      s3 POP
+      s3 POP
+      SWAP
+      FALSE
+      __tact_store_bool INLINECALLDICT
+    }>
+    OVER
+    ISNULL
+    NOT
+    IF:<{
+      TRUE
+      __tact_store_bool INLINECALLDICT
+      SWAP
+      __tact_not_null INLINECALLDICT
+      SWAP
+          STREF
+    }>ELSE<{
+      NIP
+      FALSE
+      __tact_store_bool INLINECALLDICT
+    }>
+        ENDC
+    SWAP
+        SENDMSG
+  }>
+  $MimiappContract$_fun_updateWithdraw PROCREF:<{
+    __tact_context_get INLINECALLDICT
+    s2 s3 XCHG
+    3 BLKDROP
+    s9 PUSH
+    4429 PUSHINT
+    s0 s2 XCHG
+    __tact_slice_eq_bits INLINECALLDICT
+    THROWANYIFNOT
+    s6 PUSH
+    267 PUSHINT
+    s2 PUSH
+    257 PUSHINT
+    __tact_dict_get_slice_int INLINECALLDICT
+    DUP
+    ISNULL
+    IF:<{
+      DROP
+      s1 s6 XCHG
+      267 PUSHINT
+      s1 s7 XCPU
+      257 PUSHINT
+      __tact_dict_set_slice_int INLINECALLDICT
+    }>ELSE<{
+      __tact_not_null INLINECALLDICT
+      s2 PUSH
+      ADD
+      s2 s7 XCHG
+      267 PUSHINT
+      -ROT
+      257 PUSHINT
+      __tact_dict_set_slice_int INLINECALLDICT
+    }>
+    s4 s5 XCHG2
+    ADD
+    s0 s3 XCHG
+  }>
+  $MimiappContract$_fun_claimable PROCREF:<{
+    267 PUSHINT
+    s6 PUSH
+    s0 s2 XCHG
+    257 PUSHINT
+    __tact_dict_get_slice_int INLINECALLDICT
+    DUP
+    ISNULL
+    IFJMP:<{
+      DROP
+      0 PUSHINT
+    }>
+    __tact_not_null INLINECALLDICT
+  }>
+  $MimiappContract$_fun_recipients PROCREF:<{
+    s4 PUSH
+  }>
+  $MimiappContract$_fun_totalWithdrawn PROCREF:<{
+    s3 PUSH
+  }>
+  $MimiappContract$_fun_totalClaimed PROCREF:<{
+    s2 PUSH
+  }>
+  $MimiappContract$_fun_tokenAddress PROCREF:<{
+    s5 PUSH
+  }>
+  $MimiappContract$_fun_myJettonWalletAddress PROCREF:<{
+    OVER
+  }>
+  $MimiappContract$_fun_myJettonAmount PROCREF:<{
+    DUP
+  }>
+  $SendParameters$_constructor_bounce_to_value_mode_body_code_data PROCINLINE:<{
+  }>
+  $MimiappContract$_fun_forward PROCREF:<{
+    PUSHNULL
+    PUSHNULL
+    s2 PUSH
+    ISNULL
+    NOT
+    IF:<{
+      2DROP
+      $StateInit$_not_null INLINECALLDICT
+      SWAP
+    }>ELSE<{
+      s2 POP
+    }>
+    s2 s4 XCHG
+    0 PUSHINT
+    s0 s3 XCHG
+    s0 s4 XCHG
+    66 PUSHINT
+    s2 s3 XCHG2
+    $SendParameters$_constructor_bounce_to_value_mode_body_code_data INLINECALLDICT
+    $global_send INLINECALLDICT
+    DROP
+  }>
+  $MimiappContract$_fun_reply PROCINLINE:<{
+    __tact_context_get_sender INLINECALLDICT
+    SWAP
+    TRUE
+    PUSHNULL
+    $MimiappContract$_fun_forward INLINECALLDICT
+  }>
+  $MimiappContract$_fun_notify PROCINLINE:<{
+    __tact_context_get_sender INLINECALLDICT
+    SWAP
+    FALSE
+    PUSHNULL
+    $MimiappContract$_fun_forward INLINECALLDICT
+  }>
+  $SendParameters$_constructor_to_value_body PROCINLINE:<{
+    TRUE
+    s0 s3 XCHG
+    0 PUSHINT
+    s3 s0 s3 XCHG3
+    PUSHNULL
+    PUSHNULL
+  }>
+  $JettonTransfer$_constructor_queryId_amount_destination_responseDestination_customPayload_forwardTonAmount_forwardPayload PROCINLINE:<{
+  }>
+  $DeployOk$_constructor_queryId PROCINLINE:<{
+  }>
+  $MimiappContract$_internal_binary_JettonTransferNotification PROCINLINE:<{
+    DROP
+    s2 POP
+    12495 PUSHINT
+    __tact_context_get_sender INLINECALLDICT
+    s5 s(-1) PUXC
+    __tact_slice_eq_bits INLINECALLDICT
+    THROWANYIFNOT
+    s1 s2 XCHG
+    ADD
+    SWAP
+    PUSHNULL
+    FALSE
+    PUSHNULL
+    $MimiappContract$_fun_forward INLINECALLDICT
+  }>
+  $MimiappContract$_internal_binary_WithdrawUpdate PROCINLINE:<{
+        NOP
+    $MimiappContract$_fun_updateWithdraw INLINECALLDICT
+        B{b5ee9c724101010100160000280000000057697468647261772075706461746564c8056bad} B>boc PUSHREF
+    $MimiappContract$_fun_reply INLINECALLDICT
+  }>
+  $MimiappContract$_internal_text_535d44514554aee036c09a39063fe878ca30a50cb9b5f8f6f1ec24f13e3169e9 PROCINLINE:<{
+    __tact_context_get INLINECALLDICT
+    s2 s3 XCHG
+    3 BLKDROP
+    s5 PUSH
+    267 PUSHINT
+    s2 PUSH
+    257 PUSHINT
+    __tact_dict_get_slice_int INLINECALLDICT
+    52232 PUSHINT
+    OVER
+    ISNULL
+    NOT
+    IF:<{
+      OVER
+      0 PUSHINT
+      __tact_int_neq_nullable_one INLINECALLDICT
+    }>ELSE<{
+      FALSE
+    }>
+    THROWANYIFNOT
+    50000000 PUSHINT
+    42 PUSHINT
+    s2 PUSH
+    __tact_not_null INLINECALLDICT
+    __tact_context_get_sender INLINECALLDICT
+    __tact_context_get_sender INLINECALLDICT
+    PUSHNULL
+    1 PUSHINT
+        B{b5ee9c72410101010003000001f8f0f88c0c} B>boc <s PUSHSLICE
+    $JettonTransfer$_constructor_queryId_amount_destination_responseDestination_customPayload_forwardTonAmount_forwardPayload INLINECALLDICT
+    $JettonTransfer$_store_cell INLINECALLDICT
+    s9 PUSH
+    -ROT
+    $SendParameters$_constructor_to_value_body INLINECALLDICT
+    $global_send INLINECALLDICT
+    DROP
+    s1 s6 XCHG
+    267 PUSHINT
+    s0 s7 XCHG2
+    0 PUSHINT
+    257 PUSHINT
+    __tact_dict_set_slice_int INLINECALLDICT
+    s0 s5 XCHG
+    __tact_not_null INLINECALLDICT
+    s1 s3 XCHG
+    ADD
+        B{b5ee9c7241010101000d00001600000000436c61696d6564d921856a} B>boc PUSHREF
+    s1 s3 XCHG
+    $MimiappContract$_fun_reply INLINECALLDICT
+  }>
+  $MimiappContract$_internal_text_5ee407654da4f1c61e32aaa5b1d3010f4ccea3cc166ea9ac24250fec0df1fd94 PROCINLINE:<{
+    __tact_context_get INLINECALLDICT
+    s2 s3 XCHG
+    3 BLKDROP
+    267 PUSHINT
+    s6 PUSH
+    s0 s2 XCHG
+    257 PUSHINT
+    __tact_dict_get_slice_int INLINECALLDICT
+    52232 PUSHINT
+    OVER
+    ISNULL
+    NOT
+    IF:<{
+      OVER
+      0 PUSHINT
+      __tact_int_neq_nullable_one INLINECALLDICT
+    }>ELSE<{
+      FALSE
+    }>
+    THROWANYIFNOT
+    __tact_string_builder_start_comment INLINECALLDICT
+        B{b5ee9c7241010101000b000012436c61696d61626c6548867ccf} B>boc <s PUSHSLICE
+    __tact_string_builder_append INLINECALLDICT
+    SWAP
+    __tact_not_null INLINECALLDICT
+    __tact_int_to_string INLINECALLDICT
+    __tact_string_builder_append INLINECALLDICT
+    __tact_string_builder_end INLINECALLDICT
+    $MimiappContract$_fun_reply INLINECALLDICT
+  }>
+  $MimiappContract$_internal_binary_Deploy PROCINLINE:<{
+    $DeployOk$_constructor_queryId INLINECALLDICT
+    $DeployOk$_store_cell INLINECALLDICT
+    $MimiappContract$_fun_notify INLINECALLDICT
+  }>
+  %claimable PROC:<{
+    __tact_verify_address INLINECALLDICT
+    $MimiappContract$_contract_load INLINECALLDICT
+    7 ROLL
+    $MimiappContract$_fun_claimable INLINECALLDICT
+    7 1 BLKDROP2
+  }>
+  %recipients PROC:<{
+    $MimiappContract$_contract_load INLINECALLDICT
+    $MimiappContract$_fun_recipients INLINECALLDICT
+    7 1 BLKDROP2
+  }>
+  %totalWithdrawn PROC:<{
+    $MimiappContract$_contract_load INLINECALLDICT
+    $MimiappContract$_fun_totalWithdrawn INLINECALLDICT
+    7 1 BLKDROP2
+  }>
+  %totalClaimed PROC:<{
+    $MimiappContract$_contract_load INLINECALLDICT
+    $MimiappContract$_fun_totalClaimed INLINECALLDICT
+    7 1 BLKDROP2
+  }>
+  %tokenAddress PROC:<{
+    $MimiappContract$_contract_load INLINECALLDICT
+    $MimiappContract$_fun_tokenAddress INLINECALLDICT
+    7 1 BLKDROP2
+  }>
+  %myJettonWalletAddress PROC:<{
+    $MimiappContract$_contract_load INLINECALLDICT
+    $MimiappContract$_fun_myJettonWalletAddress INLINECALLDICT
+    7 1 BLKDROP2
+  }>
+  %myJettonAmount PROC:<{
+    $MimiappContract$_contract_load INLINECALLDICT
+    $MimiappContract$_fun_myJettonAmount INLINECALLDICT
+    7 1 BLKDROP2
+  }>
+  supported_interfaces PROC:<{
+    123515602279859691144772641439386770278 PUSHINT
+    209801025412363888721030803524359905849 PUSHINT
+    42980537499636128163026532310500881091 PUSHINT
+    36993126140238121407019133875791708966 PUSHINT
+    289074767680806556846472852687671582181 PUSHINT
+  }>
+  get_abi_ipfs PROC:<{
+    x{697066733a2f2f516d5079354a775a3478446d397178736e61664272656f46613563596362616b775a4142556645667346734c7733} PUSHSLICE
+  }>
+  lazy_deployment_completed PROC:<{
+    c4 PUSH
+    CTOS
+    1 LDI
+    SWAP
+  }>
+  $MimiappContract$_contract_router_internal PROCREF:<{
+    c2 SAVE
+    SAMEALTSAVE
+    SWAP
+    IFJMP:<{
+      DROP
+      TRUE
+    }>
+    0 PUSHINT
+    OVER
+    SBITS
+    31 GTINT
+    IF:<{
+      DROP
+      DUP
+      32 PLDU
+    }>
+    DUP
+    1935855772 PUSHINT
+    EQUAL
+    IFJMP:<{
+      DROP
+      $JettonTransferNotification$_load INLINECALLDICT
+      1 4 BLKDROP2
+      $MimiappContract$_internal_binary_JettonTransferNotification INLINECALLDICT
+      TRUE
+    }>
+    DUP
+    462494594 PUSHINT
+    EQUAL
+    IFJMP:<{
+      DROP
+      $WithdrawUpdate$_load INLINECALLDICT
+      1 2 BLKDROP2
+      $MimiappContract$_internal_binary_WithdrawUpdate INLINECALLDICT
+      TRUE
+    }>
+    DUP
+    2490013878 PUSHINT
+    EQUAL
+    IFJMP:<{
+      DROP
+      $Deploy$_load INLINECALLDICT
+      NIP
+      $MimiappContract$_internal_binary_Deploy INLINECALLDICT
+      TRUE
+    }>
+    0 EQINT
+    IF:<{
+      HASHSU
+      DUP
+      37706754719244146510643725690127855840248500328421169614539617019438610606569 PUSHINT
+      EQUAL
+      IFJMP:<{
+        DROP
+        $MimiappContract$_internal_text_535d44514554aee036c09a39063fe878ca30a50cb9b5f8f6f1ec24f13e3169e9 INLINECALLDICT
+        TRUE
+        RETALT
+      }>
+      42920299940952453711402927794288831306299822083926429574450687434675247512980 PUSHINT
+      EQUAL
+      IFJMP:<{
+        $MimiappContract$_internal_text_5ee407654da4f1c61e32aaa5b1d3010f4ccea3cc166ea9ac24250fec0df1fd94 INLINECALLDICT
+        TRUE
+        RETALT
+      }>
+    }>ELSE<{
+      DROP
+    }>
+    FALSE
+  }>
+  recv_internal PROC:<{
+    SWAP
+    CTOS
+    4 LDU
+    SWAP
+    1 PUSHINT
+    AND
+    NEGATE
+    SWAP
+    LDMSGADDR
+    SWAP
+    __tact_verify_address INLINECALLDICT
+    s0 s4 s2 PUXCPU
+    s0 s3 XCHG
+    4 TUPLE
+    __tact_context SETGLOB
+    s0 s2 XCHG
+    __tact_context_sender SETGLOB
+    $MimiappContract$_contract_load INLINECALLDICT
+    2 7 BLKSWAP
+    $MimiappContract$_contract_router_internal INLINECALLDICT
+    130 THROWIFNOT
+    $MimiappContract$_contract_store INLINECALLDICT
+  }>
+}END>c

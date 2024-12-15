@@ -1,8 +1,34 @@
 import "@stdlib/deploy";
 
+message WithdrawUpdate {
+    amount: Int as coins;
+    destination: Address;
+}
 
-message ClaimUpdate {
-    recipients: map<Address, Int>;
+struct JettonWalletData {
+    balance: Int as coins;
+    ownerAddress: Address;
+    jettonMasterAddress: Address;
+    jettonWalletCode: Cell;
+}
+
+fun calculateJettonWalletAddress(
+    ownerAddress: Address,
+    jettonMasterAddress: Address,
+    jettonWalletCode: Cell
+): Address {
+
+    let initData = JettonWalletData{
+        balance: 0,
+        ownerAddress,
+        jettonMasterAddress,
+        jettonWalletCode,
+    };
+
+    return contractAddress(StateInit{
+        code: jettonWalletCode,
+        data: initData.toCell(),
+    });
 }
 
 const JettonTransferGas: Int = ton("0.05");
@@ -17,62 +43,79 @@ message(0xf8a7ea5) JettonTransfer {
     forwardPayload: Slice as remaining;
 }
 
-message Claim {
+message(0x7362d09c) JettonTransferNotification {
+    queryId: Int as uint64;
     amount: Int as coins;
+    sender: Address;
+    forwardPayload: Slice as remaining;
 }
 
-struct JettonWalletData {
-    balance: Int as coins;
-    ownerAddress: Address;
-    jettonMasterAddress: Address;
-    jettonWalletCode: Cell;
-}
-
-contract CocoMonContract with Deployable {
+contract MimiappContract with Deployable {
     owner: Address;
     tokenAddress: Address;
     recipients: map<Address, Int>;
+    totalWithdrawn: Int;
+    totalClaimed: Int;
+    myJettonWalletAddress: Address;
+    myJettonAmount: Int as coins = 0;
 
-    init(tokenAddress: Address) {
+    init(tokenAddress: Address, jettonWalletCode: Cell) {
         self.owner = context().sender;
         self.tokenAddress = tokenAddress;
+        self.recipients = emptyMap();
+        self.totalWithdrawn = 0;
+        self.totalClaimed = 0;
+        self.myJettonWalletAddress = calculateJettonWalletAddress(
+            myAddress(),
+            tokenAddress,
+            jettonWalletCode,
+        );
     }
 
-    receive(msg: ClaimUpdate) {
-        self.updateClaim(msg.recipients);
+    receive(msg: JettonTransferNotification) {
+        require(
+            sender() == self.myJettonWalletAddress,
+            "Notification not from your jetton wallet!",
+        );
+
+        self.myJettonAmount += msg.amount;
+
+        // Forward excesses
+        self.forward(msg.sender, null, false, null);
     }
 
-    fun updateClaim(recipients: map<Address, Int>) {
+    receive(msg: WithdrawUpdate) {
+        self.updateWithdraw(msg);
+        self.reply("Withdraw updated".asComment());
+    }
+
+    fun updateWithdraw(msg: WithdrawUpdate) {
         let ctx: Context = context();
         require(ctx.sender == self.owner, "Invalid sender");
 
-        foreach (recipient, amount in recipients) {
-            let cmt: StringBuilder = beginComment();
-            let old = self.recipients.get(recipient);
-            if (old == null) {
-                self.recipients.set(recipient, amount);
-            } else {
-                let new = old!! + amount;
-                self.recipients.set(recipient, new);
-            }
+        let old = self.recipients.get(msg.destination);
+        if (old == null) {
+            self.recipients.set(msg.destination, msg.amount);
+        } else {
+            let new = old!! + msg.amount;
+            self.recipients.set(msg.destination, new);
         }
 
-        self.reply("sent".asComment());
+        self.totalWithdrawn += msg.amount;
     }
 
-    receive(msg: Claim) {
+    receive("claim") {
         let ctx: Context = context();
         let amount = self.recipients.get(ctx.sender);
         require(amount != null && amount != 0, "No amount to claim");
-
-        require(msg.amount <= amount!!, "Amount to claim is too big");
+        // require(self.myJettonAmount >= amount!!, "Not enough jettons");
 
         send(SendParameters{
-            to: self.tokenAddress, 
-            value: JettonTransferGas, 
+            to: self.myJettonWalletAddress,
+            value: JettonTransferGas,
             body: JettonTransfer{
                 queryId: 42,
-                amount: msg.amount - amount!!,
+                amount: amount!!,
                 destination: sender(),
                 responseDestination: sender(),
                 customPayload: null,
@@ -81,7 +124,23 @@ contract CocoMonContract with Deployable {
             }.toCell(),
         });
 
-        self.recipients.set(ctx.sender, msg.amount - amount!!);
+        self.recipients.set(ctx.sender, 0);
+
+        self.totalClaimed += amount!!;
+
+        self.reply("Claimed".asComment());
+    }
+
+    receive("claim_test") {
+        let ctx: Context = context();
+        let amount = self.recipients.get(ctx.sender);
+        require(amount != null && amount != 0, "No amount to claim");
+        let strBuilder: StringBuilder = beginComment();
+        strBuilder.append("Claimable");
+        strBuilder.append(amount!!.toString());
+
+
+        self.reply(strBuilder.toCell());
     }
 
     get fun claimable(adr: Address): Int {
@@ -96,5 +155,25 @@ contract CocoMonContract with Deployable {
 
     get fun recipients(): map<Address, Int> {
         return self.recipients;
+    }
+
+    get fun totalWithdrawn(): Int {
+        return self.totalWithdrawn;
+    }
+
+    get fun totalClaimed(): Int {
+        return self.totalClaimed;
+    }
+
+    get fun tokenAddress(): Address {
+        return self.tokenAddress;
+    }
+
+    get fun myJettonWalletAddress(): Address {
+        return self.myJettonWalletAddress;
+    }
+
+    get fun myJettonAmount(): Int {
+        return self.myJettonAmount;
     }
 }

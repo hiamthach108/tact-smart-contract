@@ -1,0 +1,19 @@
+;; Comment "Withdraw updated"
+cell __gen_cell_comment_3ea28e1023e0dfb1d343d5da5cd8d4e66d65a154d486f23d22651d734a028f5b() asm """
+    B{b5ee9c724101010100160000280000000057697468647261772075706461746564c8056bad} B>boc PUSHREF
+""";
+
+;; Slice Xc8RiEf2n67CyZXLmaz5LXDP4yIzQvZslrUENQxdWxk=
+slice __gen_slice_slice_5dcf118847f69faec2c995cb99acf92d70cfe3223342f66c96b504350c5d5b19() asm """
+    B{b5ee9c72410101010003000001f8f0f88c0c} B>boc <s PUSHSLICE
+""";
+
+;; Comment "Claimed"
+cell __gen_cell_comment_59c6e38cf93b2767516fd8b6f8801c129e1f6fc3285f2c5ff1b68c85a3b015cb() asm """
+    B{b5ee9c7241010101000d00001600000000436c61696d6564d921856a} B>boc PUSHREF
+""";
+
+;; String "Claimable"
+slice __gen_slice_string_2d0b8fe2fee254d19aff1163c8a1c6971c3422dad7b54ef8fa314a9bf1c6b0e5() asm """
+    B{b5ee9c7241010101000b000012436c61696d61626c6548867ccf} B>boc <s PUSHSLICE
+""";

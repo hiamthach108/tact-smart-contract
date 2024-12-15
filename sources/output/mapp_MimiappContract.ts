@@ -464,49 +464,55 @@ function dictValueParserFactoryDeploy(): DictionaryValue<FactoryDeploy> {
     }
 }
 
-export type ClaimUpdate = {
-    $$type: 'ClaimUpdate';
-    recipients: Dictionary<Address, bigint>;
+export type WithdrawUpdate = {
+    $$type: 'WithdrawUpdate';
+    amount: bigint;
+    destination: Address;
 }
 
-export function storeClaimUpdate(src: ClaimUpdate) {
+export function storeWithdrawUpdate(src: WithdrawUpdate) {
     return (builder: Builder) => {
         let b_0 = builder;
-        b_0.storeUint(1021731786, 32);
-        b_0.storeDict(src.recipients, Dictionary.Keys.Address(), Dictionary.Values.BigInt(257));
+        b_0.storeUint(462494594, 32);
+        b_0.storeCoins(src.amount);
+        b_0.storeAddress(src.destination);
     };
 }
 
-export function loadClaimUpdate(slice: Slice) {
+export function loadWithdrawUpdate(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 1021731786) { throw Error('Invalid prefix'); }
-    let _recipients = Dictionary.load(Dictionary.Keys.Address(), Dictionary.Values.BigInt(257), sc_0);
-    return { $$type: 'ClaimUpdate' as const, recipients: _recipients };
+    if (sc_0.loadUint(32) !== 462494594) { throw Error('Invalid prefix'); }
+    let _amount = sc_0.loadCoins();
+    let _destination = sc_0.loadAddress();
+    return { $$type: 'WithdrawUpdate' as const, amount: _amount, destination: _destination };
 }
 
-function loadTupleClaimUpdate(source: TupleReader) {
-    let _recipients = Dictionary.loadDirect(Dictionary.Keys.Address(), Dictionary.Values.BigInt(257), source.readCellOpt());
-    return { $$type: 'ClaimUpdate' as const, recipients: _recipients };
+function loadTupleWithdrawUpdate(source: TupleReader) {
+    let _amount = source.readBigNumber();
+    let _destination = source.readAddress();
+    return { $$type: 'WithdrawUpdate' as const, amount: _amount, destination: _destination };
 }
 
-function loadGetterTupleClaimUpdate(source: TupleReader) {
-    let _recipients = Dictionary.loadDirect(Dictionary.Keys.Address(), Dictionary.Values.BigInt(257), source.readCellOpt());
-    return { $$type: 'ClaimUpdate' as const, recipients: _recipients };
+function loadGetterTupleWithdrawUpdate(source: TupleReader) {
+    let _amount = source.readBigNumber();
+    let _destination = source.readAddress();
+    return { $$type: 'WithdrawUpdate' as const, amount: _amount, destination: _destination };
 }
 
-function storeTupleClaimUpdate(source: ClaimUpdate) {
+function storeTupleWithdrawUpdate(source: WithdrawUpdate) {
     let builder = new TupleBuilder();
-    builder.writeCell(source.recipients.size > 0 ? beginCell().storeDictDirect(source.recipients, Dictionary.Keys.Address(), Dictionary.Values.BigInt(257)).endCell() : null);
+    builder.writeNumber(source.amount);
+    builder.writeAddress(source.destination);
     return builder.build();
 }
 
-function dictValueParserClaimUpdate(): DictionaryValue<ClaimUpdate> {
+function dictValueParserWithdrawUpdate(): DictionaryValue<WithdrawUpdate> {
     return {
         serialize: (src, builder) => {
-            builder.storeRef(beginCell().store(storeClaimUpdate(src)).endCell());
+            builder.storeRef(beginCell().store(storeWithdrawUpdate(src)).endCell());
         },
         parse: (src) => {
-            return loadClaimUpdate(src.loadRef().beginParse());
+            return loadWithdrawUpdate(src.loadRef().beginParse());
         }
     }
 }
@@ -594,49 +600,67 @@ function dictValueParserJettonTransfer(): DictionaryValue<JettonTransfer> {
     }
 }
 
-export type Claim = {
-    $$type: 'Claim';
+export type JettonTransferNotification = {
+    $$type: 'JettonTransferNotification';
+    queryId: bigint;
     amount: bigint;
+    sender: Address;
+    forwardPayload: Slice;
 }
 
-export function storeClaim(src: Claim) {
+export function storeJettonTransferNotification(src: JettonTransferNotification) {
     return (builder: Builder) => {
         let b_0 = builder;
-        b_0.storeUint(1038766039, 32);
+        b_0.storeUint(1935855772, 32);
+        b_0.storeUint(src.queryId, 64);
         b_0.storeCoins(src.amount);
+        b_0.storeAddress(src.sender);
+        b_0.storeBuilder(src.forwardPayload.asBuilder());
     };
 }
 
-export function loadClaim(slice: Slice) {
+export function loadJettonTransferNotification(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 1038766039) { throw Error('Invalid prefix'); }
+    if (sc_0.loadUint(32) !== 1935855772) { throw Error('Invalid prefix'); }
+    let _queryId = sc_0.loadUintBig(64);
     let _amount = sc_0.loadCoins();
-    return { $$type: 'Claim' as const, amount: _amount };
+    let _sender = sc_0.loadAddress();
+    let _forwardPayload = sc_0;
+    return { $$type: 'JettonTransferNotification' as const, queryId: _queryId, amount: _amount, sender: _sender, forwardPayload: _forwardPayload };
 }
 
-function loadTupleClaim(source: TupleReader) {
+function loadTupleJettonTransferNotification(source: TupleReader) {
+    let _queryId = source.readBigNumber();
     let _amount = source.readBigNumber();
-    return { $$type: 'Claim' as const, amount: _amount };
+    let _sender = source.readAddress();
+    let _forwardPayload = source.readCell().asSlice();
+    return { $$type: 'JettonTransferNotification' as const, queryId: _queryId, amount: _amount, sender: _sender, forwardPayload: _forwardPayload };
 }
 
-function loadGetterTupleClaim(source: TupleReader) {
+function loadGetterTupleJettonTransferNotification(source: TupleReader) {
+    let _queryId = source.readBigNumber();
     let _amount = source.readBigNumber();
-    return { $$type: 'Claim' as const, amount: _amount };
+    let _sender = source.readAddress();
+    let _forwardPayload = source.readCell().asSlice();
+    return { $$type: 'JettonTransferNotification' as const, queryId: _queryId, amount: _amount, sender: _sender, forwardPayload: _forwardPayload };
 }
 
-function storeTupleClaim(source: Claim) {
+function storeTupleJettonTransferNotification(source: JettonTransferNotification) {
     let builder = new TupleBuilder();
+    builder.writeNumber(source.queryId);
     builder.writeNumber(source.amount);
+    builder.writeAddress(source.sender);
+    builder.writeSlice(source.forwardPayload.asCell());
     return builder.build();
 }
 
-function dictValueParserClaim(): DictionaryValue<Claim> {
+function dictValueParserJettonTransferNotification(): DictionaryValue<JettonTransferNotification> {
     return {
         serialize: (src, builder) => {
-            builder.storeRef(beginCell().store(storeClaim(src)).endCell());
+            builder.storeRef(beginCell().store(storeJettonTransferNotification(src)).endCell());
         },
         parse: (src) => {
-            return loadClaim(src.loadRef().beginParse());
+            return loadJettonTransferNotification(src.loadRef().beginParse());
         }
     }
 }
@@ -704,93 +728,116 @@ function dictValueParserJettonWalletData(): DictionaryValue<JettonWalletData> {
     }
 }
 
-export type MultiSendContract$Data = {
-    $$type: 'MultiSendContract$Data';
+export type MimiappContract$Data = {
+    $$type: 'MimiappContract$Data';
     owner: Address;
     tokenAddress: Address;
-    tokenBalance: bigint;
     recipients: Dictionary<Address, bigint>;
+    totalWithdrawn: bigint;
+    totalClaimed: bigint;
+    myJettonWalletAddress: Address;
+    myJettonAmount: bigint;
 }
 
-export function storeMultiSendContract$Data(src: MultiSendContract$Data) {
+export function storeMimiappContract$Data(src: MimiappContract$Data) {
     return (builder: Builder) => {
         let b_0 = builder;
         b_0.storeAddress(src.owner);
         b_0.storeAddress(src.tokenAddress);
-        b_0.storeCoins(src.tokenBalance);
         b_0.storeDict(src.recipients, Dictionary.Keys.Address(), Dictionary.Values.BigInt(257));
+        b_0.storeInt(src.totalWithdrawn, 257);
+        let b_1 = new Builder();
+        b_1.storeInt(src.totalClaimed, 257);
+        b_1.storeAddress(src.myJettonWalletAddress);
+        b_1.storeCoins(src.myJettonAmount);
+        b_0.storeRef(b_1.endCell());
     };
 }
 
-export function loadMultiSendContract$Data(slice: Slice) {
+export function loadMimiappContract$Data(slice: Slice) {
     let sc_0 = slice;
     let _owner = sc_0.loadAddress();
     let _tokenAddress = sc_0.loadAddress();
-    let _tokenBalance = sc_0.loadCoins();
     let _recipients = Dictionary.load(Dictionary.Keys.Address(), Dictionary.Values.BigInt(257), sc_0);
-    return { $$type: 'MultiSendContract$Data' as const, owner: _owner, tokenAddress: _tokenAddress, tokenBalance: _tokenBalance, recipients: _recipients };
+    let _totalWithdrawn = sc_0.loadIntBig(257);
+    let sc_1 = sc_0.loadRef().beginParse();
+    let _totalClaimed = sc_1.loadIntBig(257);
+    let _myJettonWalletAddress = sc_1.loadAddress();
+    let _myJettonAmount = sc_1.loadCoins();
+    return { $$type: 'MimiappContract$Data' as const, owner: _owner, tokenAddress: _tokenAddress, recipients: _recipients, totalWithdrawn: _totalWithdrawn, totalClaimed: _totalClaimed, myJettonWalletAddress: _myJettonWalletAddress, myJettonAmount: _myJettonAmount };
 }
 
-function loadTupleMultiSendContract$Data(source: TupleReader) {
+function loadTupleMimiappContract$Data(source: TupleReader) {
     let _owner = source.readAddress();
     let _tokenAddress = source.readAddress();
-    let _tokenBalance = source.readBigNumber();
     let _recipients = Dictionary.loadDirect(Dictionary.Keys.Address(), Dictionary.Values.BigInt(257), source.readCellOpt());
-    return { $$type: 'MultiSendContract$Data' as const, owner: _owner, tokenAddress: _tokenAddress, tokenBalance: _tokenBalance, recipients: _recipients };
+    let _totalWithdrawn = source.readBigNumber();
+    let _totalClaimed = source.readBigNumber();
+    let _myJettonWalletAddress = source.readAddress();
+    let _myJettonAmount = source.readBigNumber();
+    return { $$type: 'MimiappContract$Data' as const, owner: _owner, tokenAddress: _tokenAddress, recipients: _recipients, totalWithdrawn: _totalWithdrawn, totalClaimed: _totalClaimed, myJettonWalletAddress: _myJettonWalletAddress, myJettonAmount: _myJettonAmount };
 }
 
-function loadGetterTupleMultiSendContract$Data(source: TupleReader) {
+function loadGetterTupleMimiappContract$Data(source: TupleReader) {
     let _owner = source.readAddress();
     let _tokenAddress = source.readAddress();
-    let _tokenBalance = source.readBigNumber();
     let _recipients = Dictionary.loadDirect(Dictionary.Keys.Address(), Dictionary.Values.BigInt(257), source.readCellOpt());
-    return { $$type: 'MultiSendContract$Data' as const, owner: _owner, tokenAddress: _tokenAddress, tokenBalance: _tokenBalance, recipients: _recipients };
+    let _totalWithdrawn = source.readBigNumber();
+    let _totalClaimed = source.readBigNumber();
+    let _myJettonWalletAddress = source.readAddress();
+    let _myJettonAmount = source.readBigNumber();
+    return { $$type: 'MimiappContract$Data' as const, owner: _owner, tokenAddress: _tokenAddress, recipients: _recipients, totalWithdrawn: _totalWithdrawn, totalClaimed: _totalClaimed, myJettonWalletAddress: _myJettonWalletAddress, myJettonAmount: _myJettonAmount };
 }
 
-function storeTupleMultiSendContract$Data(source: MultiSendContract$Data) {
+function storeTupleMimiappContract$Data(source: MimiappContract$Data) {
     let builder = new TupleBuilder();
     builder.writeAddress(source.owner);
     builder.writeAddress(source.tokenAddress);
-    builder.writeNumber(source.tokenBalance);
     builder.writeCell(source.recipients.size > 0 ? beginCell().storeDictDirect(source.recipients, Dictionary.Keys.Address(), Dictionary.Values.BigInt(257)).endCell() : null);
+    builder.writeNumber(source.totalWithdrawn);
+    builder.writeNumber(source.totalClaimed);
+    builder.writeAddress(source.myJettonWalletAddress);
+    builder.writeNumber(source.myJettonAmount);
     return builder.build();
 }
 
-function dictValueParserMultiSendContract$Data(): DictionaryValue<MultiSendContract$Data> {
+function dictValueParserMimiappContract$Data(): DictionaryValue<MimiappContract$Data> {
     return {
         serialize: (src, builder) => {
-            builder.storeRef(beginCell().store(storeMultiSendContract$Data(src)).endCell());
+            builder.storeRef(beginCell().store(storeMimiappContract$Data(src)).endCell());
         },
         parse: (src) => {
-            return loadMultiSendContract$Data(src.loadRef().beginParse());
+            return loadMimiappContract$Data(src.loadRef().beginParse());
         }
     }
 }
 
- type MultiSendContract_init_args = {
-    $$type: 'MultiSendContract_init_args';
+ type MimiappContract_init_args = {
+    $$type: 'MimiappContract_init_args';
     tokenAddress: Address;
+    jettonWalletCode: Cell;
 }
 
-function initMultiSendContract_init_args(src: MultiSendContract_init_args) {
+function initMimiappContract_init_args(src: MimiappContract_init_args) {
     return (builder: Builder) => {
         let b_0 = builder;
         b_0.storeAddress(src.tokenAddress);
+        b_0.storeRef(src.jettonWalletCode);
     };
 }
 
-async function MultiSendContract_init(tokenAddress: Address) {
-    const __code = Cell.fromBase64('te6ccgECEgEABF4AART/APSkE/S88sgLAQIBYgIDA3rQAdDTAwFxsKMB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFRQUwNvBPhhAvhi2zxVE9s88uCCBAUGABGhhX3aiaGkAAMBwO1E0NQB+GPSAAGOSPpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAH6APQEVTBsFOD4KNcLCoMJuvLgiQcDtAGSMH/gcCHXScIflTAg1wsf3iCCEDzmY8q6jpUw0x8BghA85mPKuvLggfQEATHbPH/gIIIQPepP17qOkjDTHwGCED3qT9e68uCB+gABMeCCEJRqmLa64wIwcAkKCwCkyPhDAcx/AcoAVTBQQyDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFgEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZY+gL0AMntVAFG+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAHR2zwIABht+EFvJBAjXwNZcAEDdPhBbyQQI18DJYERTQLHBfL0IIEBC4EBAVn0gm+lIJZQI9cAMFiWbCFtMm0B4pCK6F8DiPhCAX9t2zwMDQ8C8vhBbyQQI18DIoEBCyKBAQFBM/QKb6GUAdcAMJJbbeKCAMwIIW6zmgFwIW6SW3+RveKSMXDi8vSCCvrwgIAq+EL4Qm1xix+AEFYQWMhVYNs8yVRBM38DcEMDbW3bPDCBAQsBcIEBASFulVtZ9FkwmMgBzwBBM/RB4n8OEAFO0x8BghCUapi2uvLggdM/ATHIAYIQr/kPV1jLH8s/yfhCAXBt2zx/DwD2I4EBCyOBAQFBM/QKb6GUAdcAMJJbbeIgbo4cMBOBAQtSQoEBASFulVtZ9FkwmMgBzwBBM/RB4o4iIG7y0IABoBOBAQtSQoEBASFulVtZ9FkwmMgBzwBBM/RB4uKBAQtUQhSBAQFBM/R0b6UgllAj1wAwWJZsIW0ybQHiABAAAAAAc2VudADeghAPin6lUAjLHxbLP1AE+gJYINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WASBulTBwAcsBjh4g10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxbiIW6zlX8BygDMlHAyygDiAfoCAc8WATxtbSJus5lbIG7y0IBvIgGRMuIQJHADBIBCUCPbPDAQAcrIcQHKAVAHAcoAcAHKAlAFINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WUAP6AnABymgjbrORf5MkbrPilzMzAXABygDjDSFus5x/AcoAASBu8tCAAcyVMXABygDiyQH7CBEAmH8BygDIcAHKAHABygAkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDiJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4nABygACfwHKAALJWMw=');
-    const __system = Cell.fromBase64('te6cckECFAEABGgAAQHAAQEFoMdjAgEU/wD0pBP0vPLICwMCAWIEEwN60AHQ0wMBcbCjAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IhUUFMDbwT4YQL4Yts8VRPbPPLgggUIEgHA7UTQ1AH4Y9IAAY5I+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAH6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfoA9ARVMGwU4Pgo1wsKgwm68uCJBgFG+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAHR2zwHABht+EFvJBAjXwNZcAEDtAGSMH/gcCHXScIflTAg1wsf3iCCEDzmY8q6jpUw0x8BghA85mPKuvLggfQEATHbPH/gIIIQPepP17qOkjDTHwGCED3qT9e68uCB+gABMeCCEJRqmLa64wIwcAkMDgN0+EFvJBAjXwMlgRFNAscF8vQggQELgQEBWfSCb6UgllAj1wAwWJZsIW0ybQHikIroXwOI+EIBf23bPAoLDwD2I4EBCyOBAQFBM/QKb6GUAdcAMJJbbeIgbo4cMBOBAQtSQoEBASFulVtZ9FkwmMgBzwBBM/RB4o4iIG7y0IABoBOBAQtSQoEBASFulVtZ9FkwmMgBzwBBM/RB4uKBAQtUQhSBAQFBM/R0b6UgllAj1wAwWJZsIW0ybQHiABAAAAAAc2VudALy+EFvJBAjXwMigQELIoEBAUEz9ApvoZQB1wAwkltt4oIAzAghbrOaAXAhbpJbf5G94pIxcOLy9IIK+vCAgCr4QvhCbXGLH4AQVhBYyFVg2zzJVEEzfwNwQwNtbds8MIEBCwFwgQEBIW6VW1n0WTCYyAHPAEEz9EHifw0QAN6CEA+KfqVQCMsfFss/UAT6Algg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxYBIG6VMHABywGOHiDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFuIhbrOVfwHKAMyUcDLKAOIB+gIBzxYBTtMfAYIQlGqYtrry4IHTPwExyAGCEK/5D1dYyx/LP8n4QgFwbds8fw8BPG1tIm6zmVsgbvLQgG8iAZEy4hAkcAMEgEJQI9s8MBAByshxAcoBUAcBygBwAcoCUAUg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZQA/oCcAHKaCNus5F/kyRus+KXMzMBcAHKAOMNIW6znH8BygABIG7y0IABzJUxcAHKAOLJAfsIEQCYfwHKAMhwAcoAcAHKACRus51/AcoABCBu8tCAUATMljQDcAHKAOIkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDicAHKAAJ/AcoAAslYzACkyPhDAcx/AcoAVTBQQyDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFgEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZY+gL0AMntVAARoYV92omhpAAD908gAA==');
+async function MimiappContract_init(tokenAddress: Address, jettonWalletCode: Cell) {
+    const __code = Cell.fromBase64('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');
+    const __system = Cell.fromBase64('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');
     let builder = beginCell();
     builder.storeRef(__system);
     builder.storeUint(0, 1);
-    initMultiSendContract_init_args({ $$type: 'MultiSendContract_init_args', tokenAddress })(builder);
+    initMimiappContract_init_args({ $$type: 'MimiappContract_init_args', tokenAddress, jettonWalletCode })(builder);
     const __data = builder.endCell();
     return { code: __code, data: __data };
 }
 
-const MultiSendContract_errors: { [key: number]: { message: string } } = {
+const MimiappContract_errors: { [key: number]: { message: string } } = {
     2: { message: `Stack underflow` },
     3: { message: `Stack overflow` },
     4: { message: `Integer overflow` },
@@ -828,10 +875,11 @@ const MultiSendContract_errors: { [key: number]: { message: string } } = {
     136: { message: `Invalid address` },
     137: { message: `Masterchain support is not enabled for this contract` },
     4429: { message: `Invalid sender` },
+    12495: { message: `Notification not from your jetton wallet!` },
     52232: { message: `No amount to claim` },
 }
 
-const MultiSendContract_types: ABIType[] = [
+const MimiappContract_types: ABIType[] = [
     {"name":"StateInit","header":null,"fields":[{"name":"code","type":{"kind":"simple","type":"cell","optional":false}},{"name":"data","type":{"kind":"simple","type":"cell","optional":false}}]},
     {"name":"StdAddress","header":null,"fields":[{"name":"workchain","type":{"kind":"simple","type":"int","optional":false,"format":8}},{"name":"address","type":{"kind":"simple","type":"uint","optional":false,"format":256}}]},
     {"name":"VarAddress","header":null,"fields":[{"name":"workchain","type":{"kind":"simple","type":"int","optional":false,"format":32}},{"name":"address","type":{"kind":"simple","type":"slice","optional":false}}]},
@@ -840,48 +888,64 @@ const MultiSendContract_types: ABIType[] = [
     {"name":"Deploy","header":2490013878,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
     {"name":"DeployOk","header":2952335191,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
     {"name":"FactoryDeploy","header":1829761339,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"cashback","type":{"kind":"simple","type":"address","optional":false}}]},
-    {"name":"ClaimUpdate","header":1021731786,"fields":[{"name":"recipients","type":{"kind":"dict","key":"address","value":"int"}}]},
+    {"name":"WithdrawUpdate","header":462494594,"fields":[{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"destination","type":{"kind":"simple","type":"address","optional":false}}]},
     {"name":"JettonTransfer","header":260734629,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"destination","type":{"kind":"simple","type":"address","optional":false}},{"name":"responseDestination","type":{"kind":"simple","type":"address","optional":true}},{"name":"customPayload","type":{"kind":"simple","type":"cell","optional":true}},{"name":"forwardTonAmount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"forwardPayload","type":{"kind":"simple","type":"slice","optional":false,"format":"remainder"}}]},
-    {"name":"Claim","header":1038766039,"fields":[{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}}]},
+    {"name":"JettonTransferNotification","header":1935855772,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"sender","type":{"kind":"simple","type":"address","optional":false}},{"name":"forwardPayload","type":{"kind":"simple","type":"slice","optional":false,"format":"remainder"}}]},
     {"name":"JettonWalletData","header":null,"fields":[{"name":"balance","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"ownerAddress","type":{"kind":"simple","type":"address","optional":false}},{"name":"jettonMasterAddress","type":{"kind":"simple","type":"address","optional":false}},{"name":"jettonWalletCode","type":{"kind":"simple","type":"cell","optional":false}}]},
-    {"name":"MultiSendContract$Data","header":null,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"tokenAddress","type":{"kind":"simple","type":"address","optional":false}},{"name":"tokenBalance","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"recipients","type":{"kind":"dict","key":"address","value":"int"}}]},
+    {"name":"MimiappContract$Data","header":null,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"tokenAddress","type":{"kind":"simple","type":"address","optional":false}},{"name":"recipients","type":{"kind":"dict","key":"address","value":"int"}},{"name":"totalWithdrawn","type":{"kind":"simple","type":"int","optional":false,"format":257}},{"name":"totalClaimed","type":{"kind":"simple","type":"int","optional":false,"format":257}},{"name":"myJettonWalletAddress","type":{"kind":"simple","type":"address","optional":false}},{"name":"myJettonAmount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}}]},
 ]
 
-const MultiSendContract_getters: ABIGetter[] = [
+const MimiappContract_getters: ABIGetter[] = [
+    {"name":"claimable","arguments":[{"name":"adr","type":{"kind":"simple","type":"address","optional":false}}],"returnType":{"kind":"simple","type":"int","optional":false,"format":257}},
+    {"name":"recipients","arguments":[],"returnType":{"kind":"dict","key":"address","value":"int"}},
+    {"name":"totalWithdrawn","arguments":[],"returnType":{"kind":"simple","type":"int","optional":false,"format":257}},
+    {"name":"totalClaimed","arguments":[],"returnType":{"kind":"simple","type":"int","optional":false,"format":257}},
+    {"name":"tokenAddress","arguments":[],"returnType":{"kind":"simple","type":"address","optional":false}},
+    {"name":"myJettonWalletAddress","arguments":[],"returnType":{"kind":"simple","type":"address","optional":false}},
+    {"name":"myJettonAmount","arguments":[],"returnType":{"kind":"simple","type":"int","optional":false,"format":257}},
 ]
 
-export const MultiSendContract_getterMapping: { [key: string]: string } = {
+export const MimiappContract_getterMapping: { [key: string]: string } = {
+    'claimable': 'getClaimable',
+    'recipients': 'getRecipients',
+    'totalWithdrawn': 'getTotalWithdrawn',
+    'totalClaimed': 'getTotalClaimed',
+    'tokenAddress': 'getTokenAddress',
+    'myJettonWalletAddress': 'getMyJettonWalletAddress',
+    'myJettonAmount': 'getMyJettonAmount',
 }
 
-const MultiSendContract_receivers: ABIReceiver[] = [
-    {"receiver":"internal","message":{"kind":"typed","type":"ClaimUpdate"}},
-    {"receiver":"internal","message":{"kind":"typed","type":"Claim"}},
+const MimiappContract_receivers: ABIReceiver[] = [
+    {"receiver":"internal","message":{"kind":"typed","type":"JettonTransferNotification"}},
+    {"receiver":"internal","message":{"kind":"typed","type":"WithdrawUpdate"}},
+    {"receiver":"internal","message":{"kind":"text","text":"claim"}},
+    {"receiver":"internal","message":{"kind":"text","text":"claim_test"}},
     {"receiver":"internal","message":{"kind":"typed","type":"Deploy"}},
 ]
 
-export class MultiSendContract implements Contract {
+export class MimiappContract implements Contract {
     
-    static async init(tokenAddress: Address) {
-        return await MultiSendContract_init(tokenAddress);
+    static async init(tokenAddress: Address, jettonWalletCode: Cell) {
+        return await MimiappContract_init(tokenAddress, jettonWalletCode);
     }
     
-    static async fromInit(tokenAddress: Address) {
-        const init = await MultiSendContract_init(tokenAddress);
+    static async fromInit(tokenAddress: Address, jettonWalletCode: Cell) {
+        const init = await MimiappContract_init(tokenAddress, jettonWalletCode);
         const address = contractAddress(0, init);
-        return new MultiSendContract(address, init);
+        return new MimiappContract(address, init);
     }
     
     static fromAddress(address: Address) {
-        return new MultiSendContract(address);
+        return new MimiappContract(address);
     }
     
     readonly address: Address; 
     readonly init?: { code: Cell, data: Cell };
     readonly abi: ContractABI = {
-        types:  MultiSendContract_types,
-        getters: MultiSendContract_getters,
-        receivers: MultiSendContract_receivers,
-        errors: MultiSendContract_errors,
+        types:  MimiappContract_types,
+        getters: MimiappContract_getters,
+        receivers: MimiappContract_receivers,
+        errors: MimiappContract_errors,
     };
     
     private constructor(address: Address, init?: { code: Cell, data: Cell }) {
@@ -889,14 +953,20 @@ export class MultiSendContract implements Contract {
         this.init = init;
     }
     
-    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: ClaimUpdate | Claim | Deploy) {
+    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: JettonTransferNotification | WithdrawUpdate | 'claim' | 'claim_test' | Deploy) {
         
         let body: Cell | null = null;
-        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'ClaimUpdate') {
-            body = beginCell().store(storeClaimUpdate(message)).endCell();
+        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'JettonTransferNotification') {
+            body = beginCell().store(storeJettonTransferNotification(message)).endCell();
         }
-        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'Claim') {
-            body = beginCell().store(storeClaim(message)).endCell();
+        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'WithdrawUpdate') {
+            body = beginCell().store(storeWithdrawUpdate(message)).endCell();
+        }
+        if (message === 'claim') {
+            body = beginCell().storeUint(0, 32).storeStringTail(message).endCell();
+        }
+        if (message === 'claim_test') {
+            body = beginCell().storeUint(0, 32).storeStringTail(message).endCell();
         }
         if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'Deploy') {
             body = beginCell().store(storeDeploy(message)).endCell();
@@ -905,6 +975,56 @@ export class MultiSendContract implements Contract {
         
         await provider.internal(via, { ...args, body: body });
         
+    }
+    
+    async getClaimable(provider: ContractProvider, adr: Address) {
+        let builder = new TupleBuilder();
+        builder.writeAddress(adr);
+        let source = (await provider.get('claimable', builder.build())).stack;
+        let result = source.readBigNumber();
+        return result;
+    }
+    
+    async getRecipients(provider: ContractProvider) {
+        let builder = new TupleBuilder();
+        let source = (await provider.get('recipients', builder.build())).stack;
+        let result = Dictionary.loadDirect(Dictionary.Keys.Address(), Dictionary.Values.BigInt(257), source.readCellOpt());
+        return result;
+    }
+    
+    async getTotalWithdrawn(provider: ContractProvider) {
+        let builder = new TupleBuilder();
+        let source = (await provider.get('totalWithdrawn', builder.build())).stack;
+        let result = source.readBigNumber();
+        return result;
+    }
+    
+    async getTotalClaimed(provider: ContractProvider) {
+        let builder = new TupleBuilder();
+        let source = (await provider.get('totalClaimed', builder.build())).stack;
+        let result = source.readBigNumber();
+        return result;
+    }
+    
+    async getTokenAddress(provider: ContractProvider) {
+        let builder = new TupleBuilder();
+        let source = (await provider.get('tokenAddress', builder.build())).stack;
+        let result = source.readAddress();
+        return result;
+    }
+    
+    async getMyJettonWalletAddress(provider: ContractProvider) {
+        let builder = new TupleBuilder();
+        let source = (await provider.get('myJettonWalletAddress', builder.build())).stack;
+        let result = source.readAddress();
+        return result;
+    }
+    
+    async getMyJettonAmount(provider: ContractProvider) {
+        let builder = new TupleBuilder();
+        let source = (await provider.get('myJettonAmount', builder.build())).stack;
+        let result = source.readBigNumber();
+        return result;
     }
     
 }

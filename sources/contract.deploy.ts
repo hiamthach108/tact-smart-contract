@@ -1,14 +1,15 @@
 import * as fs from "fs";
 import * as path from "path";
-import { Address, contractAddress } from "@ton/core";
-import { CocoMonContract } from "./output/mapp_CocoMonContract";
+import { Address, contractAddress, Cell } from "@ton/core";
+import { MimiappContract } from "./output/mapp_MimiappContract";
 import { prepareTactDeployment } from "@tact-lang/deployer";
 
 (async () => {
     let testnet = true;
-    let packageName = "mapp_CocoMonContract.pkg";
-    let tokenAddr = Address.parse("kQAFFmHKD-aoQVqWRWBktdrYYLMtgzMQ2FLK9MtAF7S2xU4j");
-    let init = await CocoMonContract.init(tokenAddr);
+    let packageName = "mapp_MimiappContract.pkg";
+    let tokenAddr = Address.parse("kQBvQUrxabaus5u9P1Rp-FW8XSswFYEHQ7smJoSX6EE638jO");
+    let cell = new Cell();
+    let init = await MimiappContract.init(tokenAddr, cell);
 
     // Load required data
     let address = contractAddress(0, init);

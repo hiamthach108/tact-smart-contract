@@ -1,6 +1,6 @@
 # TACT Compilation Report
-Contract: MultiSendContract
-BOC Size: 1130 bytes
+Contract: MimiappContract
+BOC Size: 2261 bytes
 
 # Types
 Total Types: 13
@@ -37,28 +37,43 @@ Signature: `DeployOk{queryId:uint64}`
 TLB: `factory_deploy#6d0ff13b queryId:uint64 cashback:address = FactoryDeploy`
 Signature: `FactoryDeploy{queryId:uint64,cashback:address}`
 
-## ClaimUpdate
-TLB: `claim_update#3ce663ca recipients:dict<address, int> = ClaimUpdate`
-Signature: `ClaimUpdate{recipients:dict<address, int>}`
+## WithdrawUpdate
+TLB: `withdraw_update#1b911b82 amount:coins destination:address = WithdrawUpdate`
+Signature: `WithdrawUpdate{amount:coins,destination:address}`
 
 ## JettonTransfer
 TLB: `jetton_transfer#0f8a7ea5 queryId:uint64 amount:coins destination:address responseDestination:Maybe address customPayload:Maybe ^cell forwardTonAmount:coins forwardPayload:remainder<slice> = JettonTransfer`
 Signature: `JettonTransfer{queryId:uint64,amount:coins,destination:address,responseDestination:Maybe address,customPayload:Maybe ^cell,forwardTonAmount:coins,forwardPayload:remainder<slice>}`
 
-## Claim
-TLB: `claim#3dea4fd7 amount:coins = Claim`
-Signature: `Claim{amount:coins}`
+## JettonTransferNotification
+TLB: `jetton_transfer_notification#7362d09c queryId:uint64 amount:coins sender:address forwardPayload:remainder<slice> = JettonTransferNotification`
+Signature: `JettonTransferNotification{queryId:uint64,amount:coins,sender:address,forwardPayload:remainder<slice>}`
 
 ## JettonWalletData
 TLB: `_ balance:coins ownerAddress:address jettonMasterAddress:address jettonWalletCode:^cell = JettonWalletData`
 Signature: `JettonWalletData{balance:coins,ownerAddress:address,jettonMasterAddress:address,jettonWalletCode:^cell}`
 
-## MultiSendContract$Data
+## MimiappContract$Data
 TLB: `null`
 Signature: `null`
 
 # Get Methods
-Total Get Methods: 0
+Total Get Methods: 7
+
+## claimable
+Argument: adr
+
+## recipients
+
+## totalWithdrawn
+
+## totalClaimed
+
+## tokenAddress
+
+## myJettonWalletAddress
+
+## myJettonAmount
 
 # Error Codes
 2: Stack underflow
@@ -98,15 +113,16 @@ Total Get Methods: 0
 136: Invalid address
 137: Masterchain support is not enabled for this contract
 4429: Invalid sender
+12495: Notification not from your jetton wallet!
 52232: No amount to claim
 
 # Trait Inheritance Diagram
 
 ```mermaid
 graph TD
-MultiSendContract
-MultiSendContract --> BaseTrait
-MultiSendContract --> Deployable
+MimiappContract
+MimiappContract --> BaseTrait
+MimiappContract --> Deployable
 Deployable --> BaseTrait
 ```
 
@@ -114,5 +130,5 @@ Deployable --> BaseTrait
 
 ```mermaid
 graph TD
-MultiSendContract
+MimiappContract
 ```

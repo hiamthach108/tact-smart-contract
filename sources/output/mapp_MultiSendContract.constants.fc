@@ -1,9 +1,0 @@
-;; Comment "sent"
-cell __gen_cell_comment_8ce5c8027b6d8bd6084aedd3411e4d8d7f1ad449598bfb3088fefafd7774b02e() asm """
-    B{b5ee9c7241010101000a0000100000000073656e7429c3a797} B>boc PUSHREF
-""";
-
-;; Slice Xc8RiEf2n67CyZXLmaz5LXDP4yIzQvZslrUENQxdWxk=
-slice __gen_slice_slice_5dcf118847f69faec2c995cb99acf92d70cfe3223342f66c96b504350c5d5b19() asm """
-    B{b5ee9c72410101010003000001f8f0f88c0c} B>boc <s PUSHSLICE
-""";
